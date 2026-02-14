@@ -1,81 +1,115 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 
-interface Props {
-  theme?: 'dark' | 'light';
-}
-
-const CradleFocus: React.FC<Props> = ({ theme = 'light' }) => {
+const CradleFocus: React.FC = () => {
   return (
-    <section className="py-24 bg-white text-[#0F172A] overflow-hidden relative border-t border-slate-100">
+    <section className="py-32 bg-white text-slate-900 overflow-hidden relative border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="bg-slate-50 border border-slate-200 p-12 rounded-[3rem] relative z-10 shadow-sm">
-              <span className="text-nilumi-teal font-black text-[10px] uppercase tracking-[0.4em] mb-4 block">Engineered for Partners</span>
-              <h3 className="text-4xl font-bold mb-6 tracking-tight">Designed for Licensing.</h3>
-              <p className="text-slate-600 mb-8 leading-relaxed text-lg font-medium">
-                VPs of Innovation know the biggest risk with removable components is user error. Nilumi solves this with the <span className="text-nilumi-teal font-bold">Functional Cradle</span>. 
-              </p>
-              <ul className="space-y-6 text-sm text-slate-500 font-medium">
-                <li className="flex items-start gap-4">
-                  <div className="w-6 h-6 rounded-full bg-nilumi-green/10 flex items-center justify-center flex-shrink-0 mt-1">
-                    <div className="w-2 h-2 bg-nilumi-green rounded-full" />
-                  </div>
-                  <span><strong>Zero Downtime:</strong> The primary light switch is NEVER disabled, ensuring constant utility for the user.</span>
-                </li>
-                <li className="flex items-start gap-4">
-                  <div className="w-6 h-6 rounded-full bg-nilumi-green/10 flex items-center justify-center flex-shrink-0 mt-1">
-                    <div className="w-2 h-2 bg-nilumi-green rounded-full" />
-                  </div>
-                  <span><strong>Retrofit Ready:</strong> Fits standard 1-gang to multi-gang decorative cover plates with no box modification.</span>
-                </li>
-                <li className="flex items-start gap-4">
-                  <div className="w-6 h-6 rounded-full bg-nilumi-green/10 flex items-center justify-center flex-shrink-0 mt-1">
-                    <div className="w-2 h-2 bg-nilumi-green rounded-full" />
-                  </div>
-                  <span><strong>Wireless Safety:</strong> No exposed electrical contacts on the removable unit, exceeding consumer safety expectations.</span>
-                </li>
-              </ul>
-            </div>
-          </motion.div>
+        <div className="grid lg:grid-cols-2 gap-20 items-start">
           
-          <div className="grid grid-cols-2 gap-8">
-            <div className="space-y-8">
+          {/* LEFT COLUMN: Narrative & Safeguards */}
+          <div className="flex flex-col">
+            <motion.h2 
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-4xl md:text-5xl font-bold mb-8 tracking-tight text-slate-900"
+            >
+              Licensing-Ready Architecture.
+            </motion.h2>
+            
+            <motion.p 
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-slate-500 leading-relaxed text-lg max-w-xl mb-16"
+            >
+              Removable modular products introduce user-error and utility-loss risk. Nilumi eliminates this through a dual-state cradle architecture engineered for safety, retrofit compatibility, and scalable integration.
+            </motion.p>
+
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="space-y-12"
+            >
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-slate-900">Zero Downtime</h3>
+                <p className="text-slate-400 leading-relaxed text-base max-w-md">
+                  Primary lighting remains fully operational during module removal.
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-slate-900">Retrofit Compatible</h3>
+                <p className="text-slate-400 leading-relaxed text-base max-w-md">
+                  Designed for standard 1-gang and multi-gang decorative configurations.
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-slate-900">No Exposed Electrical Contacts</h3>
+                <p className="text-slate-400 leading-relaxed text-base max-w-md">
+                  Removable module contains no accessible conductive surfaces.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+          
+          {/* RIGHT COLUMN: Architectural Diagram */}
+          <div className="flex flex-col justify-center">
+            <div className="relative mb-10">
               <motion.div 
-                whileHover={{ y: -10 }}
-                className="h-72 bg-slate-100 rounded-[2.5rem] overflow-hidden border border-slate-200 shadow-xl"
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="aspect-[16/11] bg-[#FDFDFD] rounded-2xl overflow-hidden border border-slate-100 shadow-sm relative"
               >
                 <img 
                   src="/images/magnetic-connection.png" 
-                  alt="Magnetic Connection" 
-                  className="w-full h-full object-cover brightness-135 saturate-[1.2]" 
+                  alt="Nilumi Engineering Diagram" 
+                  className="w-full h-full object-cover mix-blend-multiply opacity-80"
                 />
+                
+                {/* Minimal Technical Annotations */}
+                <div className="absolute inset-0 pointer-events-none">
+                  {/* Magnet Zone */}
+                  <div className="absolute top-[32%] left-[48%] flex items-center gap-2">
+                    <div className="w-1 h-1 rounded-full bg-slate-900" />
+                    <div className="h-px w-4 bg-slate-200" />
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400 py-1">Magnet Zone</span>
+                  </div>
+
+                  {/* Bridge Path */}
+                  <div className="absolute top-[48%] right-[22%] flex items-center gap-2 flex-row-reverse">
+                    <div className="w-1 h-1 rounded-full bg-slate-900" />
+                    <div className="h-px w-4 bg-slate-200" />
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400 py-1">Bridge Path</span>
+                  </div>
+
+                  {/* Charging Zone */}
+                  <div className="absolute bottom-[28%] left-[32%] flex flex-col items-center gap-1">
+                    <div className="w-1 h-1 rounded-full bg-slate-900" />
+                    <div className="w-px h-3 bg-slate-200" />
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400 py-1">Charging Zone</span>
+                  </div>
+                </div>
               </motion.div>
-              <div className="p-8 bg-white rounded-[2rem] border border-slate-100 shadow-lg">
-                <h4 className="font-bold text-[#0F172A] mb-3 uppercase tracking-wider">Form Factor</h4>
-                <p className="text-xs text-slate-400 font-medium leading-relaxed">Maintains the "Stealth" look demanded by modern, minimalist interiors.</p>
-              </div>
             </div>
-            <div className="space-y-8 pt-16">
-              <div className="p-8 bg-[#0F172A] text-white rounded-[2rem] shadow-2xl">
-                <h4 className="font-bold mb-3 uppercase tracking-wider text-nilumi-green">Stealth Lock</h4>
-                <p className="text-xs text-slate-400 font-medium leading-relaxed">Invisible high-strength Neodymium magnets provide premium tactile feedback.</p>
-              </div>
-              <motion.div 
-                whileHover={{ y: -10 }}
-                className="h-72 bg-slate-100 rounded-[2.5rem] overflow-hidden border border-slate-200 shadow-xl"
-              >
-                <img src="/images/steps-for-use.png" alt="Steps for Use" className="w-full h-full object-cover" />
-              </motion.div>
-            </div>
+
+            <motion.p 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="text-slate-400 text-xs font-medium tracking-wide border-l border-slate-100 pl-4 ml-2"
+            >
+              Engineered for scalable manufacturing using standard switch housing dimensions.
+            </motion.p>
           </div>
+
         </div>
       </div>
     </section>

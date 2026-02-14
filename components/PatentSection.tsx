@@ -1,61 +1,51 @@
 
+
 import React from 'react';
 import { motion } from 'framer-motion';
 
-interface Props {
-  theme?: 'dark' | 'light';
-}
-
-const PatentSection: React.FC<Props> = ({ theme = 'light' }) => {
+const PatentSection: React.FC = () => {
   return (
-    <section id="patent" className="py-32 bg-slate-50 relative overflow-hidden">
-      {/* Decorative Blueprint Grid */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#0F172A 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-
-      <div className="max-w-6xl mx-auto px-8 relative z-10">
-        <div className="text-center mb-20">
+    <section id="patent" className="py-32 md:py-48 bg-white border-t border-slate-100">
+      <div className="max-w-6xl mx-auto px-8">
+        {/* Header */}
+        <div className="max-w-3xl mb-32">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-3 text-nilumi-teal font-black text-[10px] uppercase tracking-[0.5em] mb-10 bg-white shadow-xl px-8 py-3 rounded-full border border-slate-100"
           >
-            <span className="w-2 h-2 rounded-full bg-nilumi-green animate-pulse"></span>
-            US Utility Patents Registered
+            <h2 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6 tracking-tight font-heading">
+              United States Patents
+            </h2>
+            <div className="text-2xl md:text-3xl font-bold text-slate-900 mb-12 tracking-tight">
+              US 11,852,306 & US 12,529,456
+            </div>
+            <p className="text-slate-500 text-lg md:text-xl font-medium leading-relaxed max-w-2xl">
+              Issued utility patents protecting Nilumi’s magnetic-coupled modular switching architecture and cradle functionality.
+            </p>
           </motion.div>
-          <h2 className="text-4xl md:text-7xl font-black text-[#0F172A] mb-8 tracking-tighter leading-none">
-            United States Patents <br/> 
-            <span className="text-slate-300">#</span>11,852,306 & <span className="text-slate-300">#</span>12,529,456
-          </h2>
-          <p className="text-slate-500 text-lg lg:text-2xl font-medium max-w-3xl mx-auto leading-relaxed">
-            Unrivaled protection for the unique <span className="text-[#0F172A] font-bold">magnetic-coupling architecture</span> that defines the Nilumi interface.
-          </p>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-12 items-stretch">
-          {/* Certificate Card */}
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-start">
+          {/* Left Column: Protected Claims */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="lg:col-span-7 bg-[#0F172A] rounded-[3.5rem] p-12 lg:p-16 relative overflow-hidden shadow-2xl border border-white/5"
           >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-nilumi-green/10 blur-[100px] rounded-full"></div>
-            
-            <h4 className="text-nilumi-green font-black mb-10 uppercase text-[11px] tracking-[0.4em] flex items-center gap-4">
-              <div className="w-12 h-px bg-nilumi-green/30"></div>
+            <h4 className="text-slate-900 text-xs font-bold uppercase tracking-[0.2em] mb-12 flex items-center gap-4">
               Protected Claims
+              <div className="flex-grow h-px bg-slate-100"></div>
             </h4>
-
-            <ul className="space-y-8">
+            <ul className="space-y-12">
               {[
-                { label: "01", text: "Proprietary magnetic-coupling for secure modular switching." },
-                { label: "02", text: "Dual-state cradle functionality during module absence." },
-                { label: "03", text: "Precision contact pathways for code-compliant charging." }
+                { id: "01", text: "Proprietary magnetic-coupled modular switching" },
+                { id: "02", text: "Dual-state cradle functionality during module absence" },
+                { id: "03", text: "Code-compliant concealed charging pathways" }
               ].map((claim, idx) => (
-                <li key={idx} className="flex gap-8 group">
-                  <span className="text-nilumi-green/40 font-black text-xl font-heading group-hover:text-nilumi-green transition-colors">{claim.label}</span>
-                  <p className="text-white text-lg lg:text-xl font-medium leading-snug">
+                <li key={idx} className="flex gap-8 items-baseline">
+                  <span className="text-slate-300 font-mono font-medium text-sm">{claim.id}</span>
+                  <p className="text-slate-900 text-lg md:text-xl font-medium leading-snug">
                     {claim.text}
                   </p>
                 </li>
@@ -63,35 +53,30 @@ const PatentSection: React.FC<Props> = ({ theme = 'light' }) => {
             </ul>
           </motion.div>
 
-          {/* Action Card */}
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
+          {/* Right Column: Technical & IP Brief */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="lg:col-span-5 bg-white border border-slate-100 rounded-[3.5rem] p-12 flex flex-col justify-between shadow-xl"
+            className="bg-slate-50 p-10 lg:p-14 rounded-sm border border-slate-100"
           >
-            <div>
-              <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mb-8 border border-slate-100">
-                <svg className="w-8 h-8 text-nilumi-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <h3 className="text-2xl font-black text-[#0F172A] mb-4 tracking-tight">Legal Transparency</h3>
-              <p className="text-slate-500 text-sm leading-relaxed font-medium mb-10">
-                Download the full technical summary including electrical certifications and licensing opportunities.
-              </p>
-            </div>
-
+            <h4 className="text-slate-900 text-xs font-bold uppercase tracking-[0.2em] mb-8">
+              Technical & IP Brief
+            </h4>
+            <p className="text-slate-500 text-base leading-relaxed mb-12 font-medium">
+              Download the full technical summary including protected claims, electrical architecture overview, and licensing structure.
+            </p>
             <div className="space-y-6">
               <a 
                 href="/docs/Nilumi_IP_Market_Brief.pdf" 
                 download="Nilumi_IP_Market_Brief.pdf"
-                className="w-full nilumi-gradient text-[#0F172A] font-black py-6 px-8 rounded-2xl hover:scale-[1.02] transition-all flex items-center justify-center gap-4 text-[11px] uppercase tracking-widest shadow-xl shadow-nilumi-green/20 group"
+                className="inline-block bg-slate-900 text-white font-bold py-5 px-10 rounded-sm hover:bg-slate-800 transition-all text-[10px] uppercase tracking-[0.2em] w-full text-center"
               >
-                Download Patent Brief
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                Download Technical & IP Brief (PDF)
               </a>
-              <p className="text-center text-[9px] text-slate-400 uppercase font-black tracking-widest">PDF • 114KB • IP & MARKET BRIEF</p>
+              <p className="text-center text-[9px] text-slate-400 uppercase font-bold tracking-[0.2em]">
+                PDF • 114KB • IP & TECHNICAL SUMMARY
+              </p>
             </div>
           </motion.div>
         </div>

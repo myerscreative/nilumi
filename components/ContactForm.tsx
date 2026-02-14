@@ -55,88 +55,90 @@ const ContactForm: React.FC<Props> = ({ theme = 'light' }) => {
           <div className="w-24 h-24 bg-nilumi-green/20 rounded-full flex items-center justify-center mx-auto mb-10 shadow-inner">
             <svg className="w-12 h-12 text-nilumi-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
           </div>
-          <h2 className="text-4xl font-bold mb-6 tracking-tight">Request Logged.</h2>
-          <p className="text-slate-500 text-lg font-medium leading-relaxed">An innovation specialist will reach out within 24 hours to coordinate your technical walkthrough and licensing inquiry.</p>
+          <h2 className="text-4xl font-bold mb-6 tracking-tight">Inquiry Received</h2>
+          <p className="text-slate-500 text-lg font-medium leading-relaxed">A licensing specialist will reach out within 24 business hours to coordinate a technical briefing and coordinate next steps.</p>
         </div>
       </section>
     );
   }
 
   return (
-    <section id="contact" className="py-24 bg-white border-t border-slate-100">
-      <div className="max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-24">
-        <div>
-          <span className="text-nilumi-teal font-black text-[10px] uppercase tracking-[0.5em] mb-6 block">Strategic Partnerships</span>
-          <h2 className="text-4xl lg:text-6xl font-bold text-[#0F172A] mb-8 font-heading tracking-tighter leading-none">Bring Nilumi to Your Portfolio.</h2>
-          <p className="text-slate-500 text-xl mb-12 leading-relaxed font-medium">
-            Currently accepting inquiries from Tier-1 manufacturers and hospitality innovation groups. 
+    <section id="contact" className="py-32 bg-white border-t border-slate-100">
+      <div className="max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-24 items-start">
+        <div className="text-left">
+          <span className="text-slate-400 font-bold text-[10px] uppercase tracking-[0.4em] mb-6 block">Strategic Engagement</span>
+          <h2 className="text-4xl lg:text-5xl font-bold text-[#0F172A] mb-8 font-heading tracking-tight leading-[1.1]">
+            Strategic Licensing Inquiry
+          </h2>
+          <p className="text-slate-500 text-lg mb-12 leading-relaxed font-medium max-w-lg">
+            Currently engaging with select Tier-1 electrical manufacturers and hospitality innovation teams.
           </p>
-          <div className="space-y-8">
-            <div className="flex items-center gap-6">
-               <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center border border-slate-100">
-                  <svg className="w-7 h-7 text-nilumi-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-               </div>
-               <div>
-                  <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Response Guarantee</p>
-                  <p className="text-[#0F172A] font-bold text-lg">Under 24 Business Hours</p>
-               </div>
-            </div>
-            <div className="flex items-center gap-6">
-               <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center border border-slate-100">
-                  <svg className="w-7 h-7 text-nilumi-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-               </div>
-               <div>
-                  <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Confidentiality</p>
-                  <p className="text-[#0F172A] font-bold text-lg">NDA-Ready Patent Overview</p>
-               </div>
-            </div>
+          
+          <div className="space-y-4 mb-12">
+            {[
+              "Issued U.S. Utility Patents",
+              "Dual-State Cradle Architecture",
+              "Retrofit-Compatible Form Factor",
+              "UL-Compliance Architecture Ready",
+              "NDA-Ready Technical Brief"
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-3 text-[#0F172A] font-semibold text-sm">
+                <div className="w-1.5 h-1.5 bg-nilumi-green rounded-full" />
+                {item}
+              </div>
+            ))}
+          </div>
+
+          <div className="pt-8 border-t border-slate-100">
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-2">Response Commitment</p>
+            <p className="text-[#0F172A] font-bold text-sm">Initial review within 24 business hours.</p>
           </div>
         </div>
 
         <motion.div 
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-slate-50 border border-slate-200 p-10 lg:p-14 rounded-[3rem] shadow-xl"
+          className="bg-slate-50 border border-slate-200 p-8 lg:p-12 rounded-2xl shadow-sm"
         >
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-3">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">First Name</label>
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">First Name</label>
                 <input 
                   required 
                   type="text" 
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleChange}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-5 py-4 text-[#0F172A] focus:outline-none focus:border-nilumi-green transition-colors font-medium shadow-sm" 
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-3.5 text-[#0F172A] focus:outline-none focus:border-nilumi-green transition-colors font-medium shadow-sm text-sm" 
                 />
               </div>
-              <div className="space-y-3">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Last Name</label>
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Last Name</label>
                 <input 
                   required 
                   type="text" 
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleChange}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-5 py-4 text-[#0F172A] focus:outline-none focus:border-nilumi-green transition-colors font-medium shadow-sm" 
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-3.5 text-[#0F172A] focus:outline-none focus:border-nilumi-green transition-colors font-medium shadow-sm text-sm" 
                 />
               </div>
             </div>
-            <div className="space-y-3">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Work Email</label>
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Work Email</label>
               <input 
                 required 
                 type="email" 
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full bg-white border border-slate-200 rounded-xl px-5 py-4 text-[#0F172A] focus:outline-none focus:border-nilumi-green transition-colors font-medium shadow-sm" 
+                className="w-full bg-white border border-slate-200 rounded-lg px-4 py-3.5 text-[#0F172A] focus:outline-none focus:border-nilumi-green transition-colors font-medium shadow-sm text-sm" 
               />
             </div>
-            <div className="space-y-3">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Corporate Identity</label>
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Corporate Identity</label>
               <input 
                 required 
                 type="text" 
@@ -144,16 +146,16 @@ const ContactForm: React.FC<Props> = ({ theme = 'light' }) => {
                 value={formData.company}
                 onChange={handleChange}
                 placeholder="Leviton, Lutron, GE, Hilton Group..." 
-                className="w-full bg-white border border-slate-200 rounded-xl px-5 py-4 text-[#0F172A] focus:outline-none focus:border-nilumi-green transition-colors font-medium shadow-sm placeholder:text-slate-300" 
+                className="w-full bg-white border border-slate-200 rounded-lg px-4 py-3.5 text-[#0F172A] focus:outline-none focus:border-nilumi-green transition-colors font-medium shadow-sm placeholder:text-slate-300 text-sm" 
               />
             </div>
-            <div className="space-y-3">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Licensing Interest</label>
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Licensing Interest</label>
               <textarea 
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
-                className="w-full bg-white border border-slate-200 rounded-xl px-5 py-4 text-[#0F172A] h-40 resize-none focus:outline-none focus:border-nilumi-green transition-colors font-medium shadow-sm placeholder:text-slate-300" 
+                className="w-full bg-white border border-slate-200 rounded-lg px-4 py-3.5 text-[#0F172A] h-32 resize-none focus:outline-none focus:border-nilumi-green transition-colors font-medium shadow-sm placeholder:text-slate-300 text-sm" 
                 placeholder="Briefly describe your interest in the Nilumi cradle technology."
               />
             </div>
@@ -162,13 +164,18 @@ const ContactForm: React.FC<Props> = ({ theme = 'light' }) => {
               <p className="text-red-500 text-xs font-bold text-center">Submission failed. Please check your connection and try again.</p>
             )}
 
-            <button 
-              type="submit" 
-              disabled={status === 'submitting'}
-              className="w-full bg-[#0F172A] text-white font-black py-5 rounded-xl transition-all shadow-xl hover:bg-slate-800 text-[11px] uppercase tracking-[0.3em] active:scale-95 disabled:opacity-50"
-            >
-              {status === 'submitting' ? 'Logging Request...' : 'Initiate Pitch Request'}
-            </button>
+            <div className="space-y-4">
+              <button 
+                type="submit" 
+                disabled={status === 'submitting'}
+                className="w-full bg-[#0F172A] text-white font-bold py-4 rounded-lg transition-all hover:bg-slate-800 text-[11px] uppercase tracking-[0.2em] active:scale-[0.98] disabled:opacity-50"
+              >
+                {status === 'submitting' ? 'Processing Inquiry...' : 'Request Licensing Brief'}
+              </button>
+              <p className="text-[10px] text-slate-400 text-center font-medium">
+                This inquiry form is intended for established manufacturers and portfolio development teams.
+              </p>
+            </div>
           </form>
         </motion.div>
       </div>

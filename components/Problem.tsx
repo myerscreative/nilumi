@@ -120,176 +120,73 @@ const LightningEffect: React.FC = () => {
 };
 
 const Problem: React.FC = () => {
-  const [items, setItems] = useState<ProblemItem[]>([
-    {
-      id: 'panic',
-      title: "The Panic Search",
-      desc: "In emergencies, locating a flashlight is a multi-step hurdle. You're left fumbling in the dark while minutes—and safety—slip away.",
-      img: searchingForFlashlight,
-      prompt: "A cinematic, dramatic wide shot of a person fumbling through a dark, cluttered kitchen drawer in near total darkness, illuminated only by a faint, cold blue moonlight through a window. High tension, emergency atmosphere, professional photography style, 8k resolution.",
-      isAiGenerated: false
-    },
-    {
-      id: 'battery',
-      title: "The Dangerous Crawl",
-      desc: "Standard emergency lights are often tucked away. You're forced to crawl behind furniture or reach into dead-zones where batteries have already failed.",
-      img: crawlingToLight,
-      prompt: "A person crawling on the floor in a dark hallway, reaching under a console table for a flashlight. Shadows are long and oppressive. Cinematic emergency lighting, 8k resolution.",
-      isAiGenerated: false
-    },
-    {
-      id: 'smartphone',
-      title: "The Smartphone Trap",
-      desc: "Your phone is a lifeline, not a lantern. Using it as a flashlight drains critical battery power, leaving you isolated when you need to call for help. Nilumi keeps your phone charged for its real purpose: communication.",
-      img: lowBattery,
-      prompt: "A dramatic, atmospheric close-up of a hand holding a smartphone in a pitch-black environment. The screen shows a 'Low Battery 2%' warning in a harsh red font. The background is pitch black with sharp shadows. 8k, photorealistic, cinematic lighting, emergency vibe.",
-      isAiGenerated: false
-    }
-  ]);
-
-  const [loadingId, setLoadingId] = useState<string | null>(null);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editPromptInput, setEditPromptInput] = useState('');
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  const handleGenerate = async (id: string, prompt: string) => {
-    setLoadingId(id);
-    setErrorMsg(null);
-    try {
-      const newImg = await generateImage(prompt);
-      if (newImg) {
-        setItems(prev => prev.map(item => item.id === id ? { ...item, img: newImg, isAiGenerated: true } : item));
-      }
-    } catch (err: any) {
-      if (err.message === "QUOTA_EXHAUSTED") {
-        setErrorMsg("API Quota Exhausted. Please try again in a moment.");
-      } else {
-        setErrorMsg("Failed to generate image. Please try again.");
-      }
-    } finally {
-      setLoadingId(null);
-    }
-  };
-
-  const handleEditSubmit = async (item: ProblemItem) => {
-    if (!editPromptInput.trim()) return;
-    setLoadingId(item.id);
-    setEditingId(null);
-    setErrorMsg(null);
-    
-    let currentImg = item.img;
-    try {
-      if (!item.isAiGenerated) {
-        const baseImg = await generateImage(item.prompt);
-        if (baseImg) currentImg = baseImg;
-        else { setLoadingId(null); return; }
-      }
-
-      const editedImg = await editImage(currentImg, editPromptInput);
-      if (editedImg) {
-        setItems(prev => prev.map(i => i.id === item.id ? { ...i, img: editedImg, isAiGenerated: true } : i));
-      }
-      setEditPromptInput('');
-    } catch (err: any) {
-      if (err.message === "QUOTA_EXHAUSTED") {
-        setErrorMsg("API Quota Exhausted. Please try again later.");
-      } else {
-        setErrorMsg("Failed to edit image.");
-      }
-    } finally {
-      setLoadingId(null);
-    }
-  };
+  const points = [
+    "• Standard wall switches provide no illumination.",
+    "• Emergency systems require secondary activation.",
+    "• Portable flashlights lack fixed placement.",
+    "• Smartphones sacrifice communication for light."
+  ];
 
   return (
-    <section id="problem" className="py-24 bg-nilumi-navy relative overflow-hidden">
+    <section id="problem" className="py-32 bg-nilumi-navy relative overflow-hidden">
       <LightningEffect />
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-20"
-        >
-          <span className="text-nilumi-green font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">Homeowners are looking for something better</span>
-          <h2 className="text-3xl md:text-6xl font-bold text-white mb-6 uppercase tracking-tight leading-none">
-            Current solutions fail <br/>
-            <span className="text-slate-600 font-black">when people most need them.</span>
-          </h2>
-          <p className="text-slate-400 text-lg max-w-3xl mx-auto italic font-light leading-relaxed">
-            When the power goes out, you're stuck fumbling in the dark. Flashlights are hidden in drawers or behind furniture. Precious cell phone battery must be conserved.
-          </p>
-          
-          {errorMsg && (
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="mt-8 inline-flex items-center gap-3 px-4 py-2 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-xs font-bold uppercase tracking-widest"
-            >
-              {errorMsg}
-            </motion.div>
-          )}
-        </motion.div>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          {items.map((item, idx) => (
-            <motion.div 
-              key={item.id} 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: idx * 0.1 }}
-              className="group bg-slate-900/40 border border-slate-800 rounded-2xl overflow-hidden hover:border-nilumi-green/30 transition-all duration-300 flex flex-col shadow-2xl"
-            >
-              <div className="h-48 overflow-hidden relative bg-slate-950">
-                {loadingId === item.id && (
-                  <div className="absolute inset-0 bg-nilumi-navy/80 backdrop-blur-sm flex items-center justify-center z-40">
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="w-10 h-10 border-4 border-nilumi-green border-t-transparent rounded-full animate-spin"></div>
-                      <span className="text-[10px] text-nilumi-green font-black uppercase tracking-[0.2em]">Visualizing...</span>
-                    </div>
-                  </div>
-                )}
-                {editingId === item.id && (
-                  <div className="absolute inset-0 bg-nilumi-navy/95 backdrop-blur-xl z-50 p-6 flex flex-col justify-center animate-in fade-in zoom-in duration-300">
-                    <p className="text-[10px] font-black text-nilumi-green uppercase tracking-[0.3em] mb-4">Edit Vision</p>
-                    <textarea 
-                      autoFocus
-                      value={editPromptInput}
-                      onChange={(e) => setEditPromptInput(e.target.value)}
-                      className="bg-slate-900 border border-slate-700 rounded-xl p-4 text-sm text-white h-24 mb-4 focus:border-nilumi-green outline-none"
-                    />
-                    <div className="flex gap-3">
-                      <button onClick={() => handleEditSubmit(item)} className="flex-1 nilumi-gradient text-nilumi-navy py-3 rounded-lg text-[10px] font-black uppercase tracking-widest">Apply</button>
-                      <button onClick={() => setEditingId(null)} className="px-6 bg-slate-800 text-white py-3 rounded-lg text-[10px] font-bold uppercase tracking-widest">Cancel</button>
-                    </div>
-                  </div>
-                )}
-                <img 
-                  src={item.img} 
-                  alt={item.title} 
-                  className={`w-full h-full object-cover transition-all duration-1000 grayscale group-hover:grayscale-[0.5]`} 
-                />
-                <div className="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button 
-                    onClick={() => handleGenerate(item.id, item.prompt)} 
-                    disabled={loadingId !== null}
-                    className="bg-slate-950/80 p-2.5 rounded-full hover:text-nilumi-green transition-all"
+        <div className="max-w-4xl mx-auto">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mb-24"
+          >
+            <span className="text-nilumi-green font-bold text-[10px] uppercase tracking-[0.4em] mb-6 block border-l-2 border-nilumi-green pl-4">The Licensing Gap</span>
+            <h2 className="text-5xl md:text-8xl font-bold text-white mb-12 uppercase tracking-tighter leading-none font-heading">
+              THE MARKET <br/>
+              <span className="nilumi-text-gradient">FAILURE.</span>
+            </h2>
+            
+            <div className="space-y-12">
+              <p className="text-2xl md:text-3xl text-slate-300 font-medium-header tracking-tight">
+                During power interruption:
+              </p>
+              
+              <div className="grid md:grid-cols-2 gap-x-12 gap-y-10">
+                {points.map((point, idx) => (
+                  <motion.div 
+                    key={idx}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: idx * 0.1 }}
+                    className="flex items-start border-l border-white/10 pl-6 group hover:border-nilumi-green/50 transition-colors"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-                  </button>
-                </div>
+                    <p className="text-xl md:text-2xl text-slate-400 group-hover:text-white transition-colors leading-snug">
+                      {point}
+                    </p>
+                  </motion.div>
+                ))}
               </div>
-              <div className="p-8 flex-1 flex flex-col">
-                <h3 className="text-xl font-bold text-white mb-4 uppercase tracking-wide">{item.title}</h3>
-                <p className="text-slate-400 leading-relaxed text-sm flex-1">{item.desc}</p>
-                <div className="mt-6 flex items-center gap-2 text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                  Failure Stake: Power Loss
+
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+                className="pt-16 mt-16 border-t border-white/5"
+              >
+                <p className="text-2xl md:text-4xl text-white font-medium-header tracking-tight leading-tight mb-12">
+                  The wall switch — the most intuitive control point in the home — becomes non-functional during outage.
+                </p>
+                
+                <div className="flex flex-col md:flex-row items-center gap-8">
+                  <div className="h-[2px] w-24 bg-nilumi-green/30"></div>
+                  <p className="text-3xl md:text-5xl font-black text-nilumi-green uppercase tracking-tighter">
+                    Nilumi resolves this structural failure.
+                  </p>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

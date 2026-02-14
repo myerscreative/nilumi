@@ -52,69 +52,53 @@ const SuccessSection: React.FC = () => {
               Revelation
             </motion.div>
 
-            <h2 className="text-4xl lg:text-7xl font-black text-[#0F172A] tracking-tighter leading-[1.1] mb-10 font-heading drop-shadow-sm">
-              Introducing <span className="nilumi-text-gradient">Nilumi:</span> <br className="hidden lg:block"/>
-              <span className="text-2xl lg:text-5xl opacity-80 block mt-8 tracking-tight">The Flashlight Wall Switch.</span>
+            <h2 className="text-4xl lg:text-7xl font-black text-[#0F172A] tracking-tighter leading-[1.1] mb-8 font-heading drop-shadow-sm">
+              Introducing <span className="nilumi-text-gradient">Nilumi</span>
             </h2>
 
-            <p className="text-slate-500 text-xl lg:text-3xl font-medium leading-relaxed mb-20 max-w-2xl italic border-l-4 border-nilumi-green/30 pl-8">
-              Elegant design that lights the way.
+            <p className="text-xl lg:text-3xl text-[#0F172A] font-bold leading-tight mb-16 max-w-2xl border-l-4 border-nilumi-green/30 pl-8">
+              A patented wall switch architecture with an integrated, removable, self-charging light module.
             </p>
             
-            <div className="grid md:grid-cols-3 gap-12 lg:gap-16">
-              {/* Pillar 1: Modern Design */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="group relative"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#A3C644] to-[#43A49B] flex items-center justify-center text-white shadow-lg mb-6 group-hover:scale-110 transition-transform duration-500">
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-                  </svg>
-                </div>
-                <h4 className="text-[#0F172A] font-black text-[11px] uppercase tracking-[0.3em] mb-3">Modern Design</h4>
-                <p className="text-slate-600 text-sm lg:text-base leading-relaxed font-bold">
-                  Nilumi elegantly hides the flashlight right where you can see it.
-                </p>
-              </motion.div>
+            <div className="grid md:grid-cols-2 gap-x-16 gap-y-12 mb-20">
+              {[
+                "Functions as a standard decorative wall switch",
+                "Activates automatically during power interruption",
+                "Removable high-output lithium light module",
+                "Maintains full switch continuity during module removal"
+              ].map((bullet, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 + (i * 0.1) }}
+                  className="flex items-center gap-4 py-4 border-b border-slate-200"
+                >
+                  <span className="text-nilumi-teal text-xl font-black">•</span>
+                  <span className="text-[#0F172A] text-lg lg:text-xl font-bold tracking-tight">{bullet}</span>
+                </motion.div>
+              ))}
+            </div>
 
-              {/* Pillar 2: Daily Utility */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="group relative"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#A3C644] to-[#43A49B] flex items-center justify-center text-white shadow-lg mb-6 group-hover:scale-110 transition-transform duration-500">
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            <div className="flex flex-wrap gap-6 lg:gap-12 pt-12 border-t border-slate-200">
+              {[
+                "NO BEHAVIOR CHANGE REQUIRED",
+                "NO EXPOSED WIRING",
+                "NO ELECTRICAL BOX MODIFICATION"
+              ].map((claim, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8 + (i * 0.1) }}
+                  className="flex items-center gap-3"
+                >
+                  <svg className="w-5 h-5 text-nilumi-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                   </svg>
-                </div>
-                <h4 className="text-[#0F172A] font-black text-[11px] uppercase tracking-[0.3em] mb-3">Daily Utility</h4>
-                <p className="text-slate-600 text-sm lg:text-base leading-relaxed font-bold">
-                  Use it every day to control your lights exactly like a standard switch.
-                </p>
-              </motion.div>
-
-              {/* Pillar 3: Your Guide in the Dark */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7 }}
-                className="group relative"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#A3C644] to-[#43A49B] flex items-center justify-center text-white shadow-lg mb-6 group-hover:scale-110 transition-transform duration-500">
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <h4 className="text-[#0F172A] font-black text-[11px] uppercase tracking-[0.3em] mb-3">Guide in the Dark</h4>
-                <p className="text-slate-600 text-sm lg:text-base leading-relaxed font-bold">
-                  Removable, always charged, and ready the moment the power fails.
-                </p>
-              </motion.div>
+                  <span className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-800">{claim}</span>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </div>

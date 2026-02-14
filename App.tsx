@@ -4,7 +4,6 @@ import { useScroll, useMotionValueEvent } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Problem from './components/Problem';
-import HowItWorks from './components/HowItWorks';
 import SuccessSection from './components/SuccessSection';
 import PhaseShift from './components/PhaseShift';
 import ExpertGuide from './components/ExpertGuide';
@@ -92,7 +91,6 @@ const App: React.FC = () => {
         <Problem />
         <SuccessSection />
         <PhaseShift />
-        <HowItWorks onOpenAI={() => setIsAIOpen(true)} />
         <UseCases />
         <FeatureDeepDive theme={currentTheme} />
         <CradleFocus theme={currentTheme} />

@@ -45,7 +45,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, theme = 'dark', isAuthenticat
           </div>
         </div>
         
-        <div className={`hidden md:flex items-center gap-10 text-[9px] font-black uppercase tracking-[0.3em] transition-colors ${isLight ? 'text-slate-500' : 'text-white/60'}`}>
+        <div className={`hidden md:flex items-center gap-10 text-[9px] uppercase transition-colors font-medium-header tracking-premium ${isLight ? 'text-slate-500' : 'text-white/60'}`}>
           <a href="#problem" className={`hover:text-nilumi-teal transition-colors`}>The Gap</a>
           <a href="#solution" className={`hover:text-nilumi-teal transition-colors`}>Innovation</a>
           <a href="#features" className={`hover:text-nilumi-teal transition-colors`}>Tech</a>

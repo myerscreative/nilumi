@@ -5,132 +5,121 @@ import { motion } from 'framer-motion';
 // @ts-ignore
 import switchHovering from '../images/switch-hovering.png';
 
-interface Props {
-  theme?: 'dark' | 'light';
-}
-
-const FeatureDeepDive: React.FC<Props> = () => {
-  const pillars = [
+const FeatureDeepDive: React.FC = () => {
+  const features = [
     {
-      title: "Recessed Charging Pins",
-      desc: "Hidden, gravity-protected contacts located at the top of the cradle. They remain inaccessible to fingers and protected from dust, ensuring a perfect electrical connection that is invisible to the eye.",
+      title: "Dual-State Functional Bridge",
+      desc: "Maintains full primary lighting operation when the module is removed, eliminating utility loss and user failure risk.",
+      id: "bridge"
+    },
+    {
+      title: "Concealed Charging Contacts",
+      desc: "Gravity-protected, recessed contact design eliminates exposed electrical pathways while ensuring consistent charging alignment.",
       id: "pins"
     },
     {
       title: "Magnetic Auto-Alignment",
-      desc: "Integrated Neodymium magnets guide the flashlight into the cradle, ensuring 100% pin-to-contact seating without the user needing to 'aim' or 'fumble' in the dark.",
+      desc: "Integrated neodymium magnets ensure automatic seating and 100% pin-to-contact engagement without user precision.",
       id: "magnets"
-    },
-    {
-      title: "The Functional Bridge",
-      desc: "The cradle serves as a zero-utility-loss bridge. Your wall switch remains 100% operational for your room's primary lighting, even when the flashlight is removed.",
-      id: "bridge"
     }
   ];
 
   return (
-    <section id="features" className="py-32 bg-[#F1F5F9] relative overflow-hidden">
+    <section id="engineering-architecture" className="py-40 bg-white relative overflow-hidden border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-24 items-center">
+        <div className="grid lg:grid-cols-2 gap-24 items-start">
           
-          {/* Left Side: Technical Copy */}
+          {/* Left Column: Engineering Stack */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
+            className="pt-8"
           >
-            <div className="mb-12">
-              <h2 className="text-4xl md:text-6xl font-black text-[#0F172A] leading-tight tracking-tight mb-6">
-                Invisible Innovation. <br/> 
-                <span className="nilumi-text-gradient">Patented Reliability.</span>
+            <div className="mb-16">
+              <span className="text-slate-400 text-[10px] uppercase font-black tracking-[0.4em] mb-6 block font-heading">Architecture</span>
+              <h2 className="text-4xl md:text-6xl font-bold text-slate-900 leading-tight tracking-tighter mb-8 font-heading">
+                Patented Architecture. <br/> 
+                Engineered for Integration.
               </h2>
-              <p className="text-slate-500 text-xl font-medium leading-relaxed">
-                We’ve hidden the complexity to prioritize safety and intuition.
+              <p className="text-slate-500 text-xl font-medium leading-relaxed max-w-xl">
+                Nilumi’s cradle system preserves full switch functionality while integrating concealed charging and magnetic alignment in a production-ready form factor.
               </p>
             </div>
 
-            <div className="space-y-12">
-              {pillars.map((pillar, i) => (
-                <div key={pillar.id} className="relative group">
-                  <div className="flex gap-6">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-2xl nilumi-gradient flex items-center justify-center shadow-lg shadow-nilumi-green/20">
-                      <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="text-[#0F172A] font-black text-xl mb-3 tracking-tight group-hover:text-nilumi-teal transition-colors">
-                        {pillar.title}
-                      </h4>
-                      <p className="text-slate-500 text-sm leading-relaxed font-medium">
-                        {pillar.desc}
-                      </p>
-                    </div>
-                  </div>
+            <div className="space-y-12 mb-20">
+              {features.map((feature, i) => (
+                <div key={feature.id} className="relative border-l border-slate-100 pl-8 transition-colors">
+                  <h4 className="text-slate-900 font-bold text-lg mb-3 tracking-tight">
+                    {feature.title}
+                  </h4>
+                  <p className="text-slate-500 text-base leading-relaxed font-medium">
+                    {feature.desc}
+                  </p>
                 </div>
               ))}
             </div>
+
+            {/* Integration Line */}
+            <div className="pt-10 border-t border-slate-100">
+              <p className="text-slate-400 text-sm font-bold leading-relaxed flex items-center gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                Retrofit-ready for standard 1-gang configurations.
+              </p>
+              <p className="text-slate-400 text-sm font-bold leading-relaxed mt-2 flex items-center gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                Designed for decorative plate compatibility and portfolio expansion.
+              </p>
+            </div>
           </motion.div>
 
-          {/* Right Side: Visual Breakdown with Leader Lines */}
-          <div className="relative">
+          {/* Right Column: Visual Breakdown */}
+          <div className="lg:sticky lg:top-32">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.98 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="relative p-8 bg-white rounded-[3.5rem] shadow-2xl border border-white overflow-hidden"
+              className="relative p-4 bg-slate-50 rounded-[3rem] shadow-sm border border-slate-100 overflow-hidden"
             >
               <img 
                 src={switchHovering} 
-                alt="Nilumi Switch with Flashlight Hovering" 
-                className="w-full h-auto rounded-[2.5rem]"
+                alt="Nilumi Engineering Render" 
+                className="w-full h-auto rounded-[2.5rem] mix-blend-multiply opacity-90"
               />
 
-              {/* Leader Lines & Dots */}
-              {/* Pins Callout */}
-              <div className="absolute top-[35%] left-[25%] group pointer-events-none">
+              {/* Technical Annotations */}
+              
+              {/* Bridge Circuit Pathway */}
+              <div className="absolute top-[50%] left-[20%] group flex items-center gap-4">
                 <div className="relative">
-                  <motion.div 
-                    animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="w-4 h-4 rounded-full bg-nilumi-teal shadow-[0_0_15px_#2DD4BF]" 
-                  />
-                  {/* Line toward left side pillars */}
-                  <div className="absolute top-1/2 left-0 w-32 h-px bg-gradient-to-l from-nilumi-teal to-transparent -translate-x-full opacity-40"></div>
+                  <div className="w-3 h-3 rounded-full bg-slate-900/10 border border-slate-900/20 flex items-center justify-center">
+                    <div className="w-1 h-1 rounded-full bg-slate-900"></div>
+                  </div>
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 bg-white/50 backdrop-blur-sm px-2 py-0.5 rounded">Bridge circuit pathway</span>
+              </div>
+
+              {/* Concealed Charging Zone */}
+              <div className="absolute top-[35%] right-[25%] group flex items-center gap-4">
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 bg-white/50 backdrop-blur-sm px-2 py-0.5 rounded order-first">Concealed charging zone</span>
+                <div className="relative">
+                  <div className="w-3 h-3 rounded-full bg-slate-900/10 border border-slate-900/20 flex items-center justify-center">
+                    <div className="w-1 h-1 rounded-full bg-slate-900"></div>
+                  </div>
                 </div>
               </div>
 
-              {/* Magnets Callout */}
-              <div className="absolute bottom-[40%] right-[30%] group pointer-events-none">
+              {/* Magnet Zone */}
+              <div className="absolute bottom-[35%] right-[35%] group flex items-center gap-4">
                 <div className="relative">
-                  <motion.div 
-                    animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                    className="w-4 h-4 rounded-full bg-nilumi-green shadow-[0_0_15px_#A3C644]" 
-                  />
-                  {/* Decorative Line */}
-                  <div className="absolute top-1/2 right-0 w-24 h-px bg-gradient-to-r from-nilumi-green to-transparent translate-x-full opacity-40"></div>
+                  <div className="w-3 h-3 rounded-full bg-slate-900/10 border border-slate-900/20 flex items-center justify-center">
+                    <div className="w-1 h-1 rounded-full bg-slate-900"></div>
+                  </div>
                 </div>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 bg-white/50 backdrop-blur-sm px-2 py-0.5 rounded">Magnet zone</span>
               </div>
             </motion.div>
           </div>
-        </div>
-
-        {/* Authority Footer */}
-        <div className="mt-32 text-center">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-4 py-4 px-10 bg-white rounded-2xl shadow-sm border border-slate-100"
-          >
-            <svg className="w-5 h-5 text-nilumi-green" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M2.166 4.9L10 1.154l7.834 3.746v5.203c0 5.06-3.342 9.401-7.834 10.647-4.492-1.246-7.834-5.587-7.834-10.647V4.9z" clipRule="evenodd" />
-            </svg>
-            <span className="text-[#0F172A] font-bold text-lg uppercase tracking-widest font-serif italic">
-              Protected by US Patents 11,852,306 & 12,529,456
-            </span>
-          </motion.div>
         </div>
       </div>
     </section>

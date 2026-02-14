@@ -5,70 +5,53 @@ import robertImage from '../images/robert-myers.png';
 
 const ExpertGuide: React.FC = () => {
   return (
-    <section className="py-32 px-6 relative z-10">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-24 px-6 relative z-10 bg-slate-50/50">
+      <div className="max-w-6xl mx-auto">
         <motion.div 
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-white border border-slate-100 rounded-[4rem] p-10 md:p-20 flex flex-col lg:flex-row items-center gap-20 shadow-[0_50px_100px_rgba(15,23,42,0.08)]"
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="bg-white border border-slate-200 rounded-3xl p-8 md:p-16 flex flex-col lg:flex-row items-center gap-12 md:gap-20 shadow-sm"
         >
-          {/* High-End Portrait Visual */}
-          <div className="relative flex-shrink-0 group">
-            <div className="absolute inset-0 bg-nilumi-teal/10 rounded-[4rem] rotate-6 group-hover:rotate-0 transition-transform duration-700"></div>
-            <div className="w-56 h-56 md:w-80 md:h-80 rounded-[3.5rem] overflow-hidden border-[12px] border-slate-50 relative z-10 shadow-2xl transition-all duration-700">
+          {/* Engineering Portrait Visual */}
+          <div className="relative flex-shrink-0">
+            <div className="w-56 h-56 md:w-72 md:h-72 rounded-2xl overflow-hidden grayscale brightness-105 border border-slate-200 relative z-10">
               <img 
                 src={robertImage} 
                 alt="Robert Myers" 
-                className="w-full h-full object-cover object-[50%_20%] saturate-[0.85] grayscale-0 transition-all duration-1000 scale-x-[-1]"
+                className="w-full h-full object-cover object-[50%_20%] scale-x-[-1]"
               />
             </div>
           </div>
 
           <div className="text-center lg:text-left flex-1">
-            <div className="inline-flex items-center gap-4 mb-10">
-              <div className="h-[2px] w-12 bg-nilumi-teal/30"></div>
-              <p className="text-nilumi-teal text-[11px] font-black uppercase tracking-[0.6em]">The Innovation Vision</p>
+            <div className="mb-8">
+              <p className="text-slate-500 text-[10px] uppercase tracking-[0.2em] font-medium-header mb-2">Founder & Lead Design Engineer</p>
+              <h4 className="text-4xl md:text-5xl font-bold text-slate-900 mb-2 tracking-tight font-heading">Robert Myers</h4>
+              <p className="text-slate-400 text-sm uppercase tracking-wider font-medium-header">
+                Lead Design Engineer &bull; <span className="normal-case tracking-normal">30+ Years Experience</span>
+              </p>
             </div>
             
-            <h4 className="text-5xl md:text-6xl font-bold text-[#0F172A] mb-4 tracking-tighter font-heading">Robert Myers</h4>
-            
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 mb-12">
-              <span className="text-slate-400 text-sm font-bold uppercase tracking-[0.2em]">Lead Design Engineer</span>
-              <div className="w-2 h-2 bg-slate-200 rounded-full"></div>
-              <span className="text-nilumi-teal text-sm font-black uppercase tracking-[0.2em] bg-nilumi-teal/5 px-4 py-1.5 rounded-full border border-nilumi-teal/10">
-                30+ Years Experience
-              </span>
+            <div className="mb-10 max-w-2xl">
+              <p className="text-lg md:text-xl text-slate-600 leading-relaxed font-sans font-light">
+                Nilumi was developed to address structural failure in traditional wall switches during power interruption. The system integrates patented magnetic coupling, dual-state cradle architecture, and concealed charging pathways into a production-ready form factor.
+              </p>
             </div>
-
-            <blockquote className="text-3xl md:text-4xl text-slate-700 font-light italic mb-12 leading-[1.3] font-sans">
-              "We didn't just want to build a gadget. We wanted to solve the <span className="text-[#0F172A] font-medium not-italic">inherent failure</span> of the light switch. Nilumi ensures you never have to search for safety in the dark."
-            </blockquote>
             
-            <div className="grid sm:grid-cols-2 gap-8 pt-10 border-t border-slate-100">
-              <div className="flex items-center gap-5 group">
-                <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-nilumi-teal group-hover:bg-nilumi-teal group-hover:text-white transition-all">
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                </div>
-                <div className="text-left">
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Intellectual Property</p>
-                  <p className="text-sm font-bold text-[#0F172A] uppercase tracking-wider">Patents US 11,852,306 & 12,529,456</p>
+            <div className="grid sm:grid-cols-2 gap-10 pt-10 border-t border-slate-100">
+              <div className="text-left">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Intellectual Property</p>
+                <div className="flex flex-col gap-1">
+                  <p className="text-sm font-semibold text-slate-800">US Patent 11,852,306</p>
+                  <p className="text-sm font-semibold text-slate-800">US Patent 12,529,456</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-5 group">
-                <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-nilumi-teal group-hover:bg-nilumi-teal group-hover:text-white transition-all">
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <div className="text-left">
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Market Readiness</p>
-                  <p className="text-sm font-bold text-[#0F172A] uppercase tracking-wider">UL-Compliance Ready</p>
-                </div>
+              <div className="text-left">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Market Readiness</p>
+                <p className="text-sm font-semibold text-slate-800 uppercase tracking-wider">UL-Compliance Architecture Ready</p>
               </div>
             </div>
           </div>

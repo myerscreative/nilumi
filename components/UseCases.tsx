@@ -4,75 +4,99 @@ import { motion } from 'framer-motion';
 
 // @ts-ignore
 import nurseryImage from '../images/mom checking on baby.png';
-
 // @ts-ignore
 import kitchenImage from '../images/woman checkin on child.png';
-
 // @ts-ignore
 import hallwayImage from '../images/hallway night light.png';
 
-const useCases = [
-  {
-    title: "The Nursery Check",
-    description: "Peek in on a sleeping child without the jarring 'click' or flood of ceiling lights. Nilumi gives you just enough light to see, and zero disruption to their rest.",
-    image: nurseryImage
-  },
-  {
-    title: "Midnight Kitchen",
-    description: "Your hand already knows the light switch. Grab the Nilumi module for a quick glass of water without disturbing the rest of the household.",
-    image: kitchenImage
-  },
-  {
-    title: "Guided Hallways",
-    description: "Power out? The hallway light you always reach for is already glowing. No searching in the dark; Nilumi leads the way from the moment you step out.",
-    image: hallwayImage
-  }
-];
-
 const UseCases: React.FC = () => {
+  const columns = [
+    {
+      title: "Low-Lumen Task Lighting",
+      description: "Silent, removable illumination for nighttime movement without activating ceiling circuits. Ideal for nurseries, hallways, or bedside use.",
+      image: nurseryImage
+    },
+    {
+      title: "Portable Everyday Utility",
+      description: "A rechargeable, high-output flashlight accessible at the most intuitive point in the home — the wall switch.",
+      image: kitchenImage
+    },
+    {
+      title: "Automatic Blackout Activation",
+      description: "During grid interruption, Nilumi activates instantly at the switch location users naturally reach first.",
+      image: hallwayImage
+    }
+  ];
+
   return (
-    <section id="use-cases" className="py-32 bg-white overflow-hidden">
+    <section id="use-cases" className="py-40 bg-white overflow-hidden border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-8">
-        <div className="mb-20 text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+        {/* Header Section */}
+        <div className="max-w-4xl mb-24">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-3 text-nilumi-teal font-black text-[10px] uppercase tracking-[0.5em] mb-12 bg-slate-50 px-6 py-2.5 rounded-full border border-slate-100 shadow-sm"
+            className="text-4xl md:text-6xl font-bold text-slate-900 tracking-tight leading-tight mb-8 font-heading"
           >
-            Habit in Action
-          </motion.div>
-          <h2 className="text-4xl md:text-6xl font-black text-[#0F172A] tracking-tight leading-tight mb-8">
-            Designed for <br/> <span className="nilumi-text-gradient">Every Dark Moment.</span>
-          </h2>
+            Designed for Daily Use. <br/> 
+            <span className="text-slate-400">Ready for Power Loss.</span>
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-xl md:text-2xl text-slate-500 leading-relaxed font-medium max-w-3xl"
+          >
+            Nilumi integrates into everyday lighting behavior while providing automatic blackout protection. This is not a single-use emergency device — it is a daily interaction product.
+          </motion.p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-12">
-          {useCases.map((useCase, i) => (
+        {/* 3-Column Grid */}
+        <div className="grid lg:grid-cols-3 gap-12 lg:gap-16 mb-32">
+          {columns.map((col, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.2 }}
-              className="group cursor-default"
+              transition={{ delay: i * 0.15 }}
+              className="flex flex-col"
             >
-              <div className="relative aspect-[4/5] rounded-[3rem] overflow-hidden mb-8 shadow-2xl">
+              <div className="relative aspect-[4/5] rounded-3xl overflow-hidden mb-8 shadow-sm group">
                 <img 
-                  src={useCase.image} 
-                  alt={useCase.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                  src={col.image} 
+                  alt={col.title}
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/40 via-transparent to-transparent opacity-40"></div>
+                <div className="absolute inset-0 bg-black/5"></div>
               </div>
               
-              <h3 className="text-2xl font-black text-[#0F172A] mb-4 tracking-tight group-hover:text-nilumi-green transition-colors">{useCase.title}</h3>
-              <p className="text-slate-500 text-base leading-relaxed font-medium">
-                {useCase.description}
+              <h3 className="text-xl font-bold text-slate-900 mb-4 tracking-tight uppercase">
+                {col.title}
+              </h3>
+              <p className="text-slate-500 text-lg leading-relaxed font-medium">
+                {col.description}
               </p>
             </motion.div>
           ))}
         </div>
+
+        {/* Licensing Framing Block */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-4xl p-12 bg-slate-50 border border-slate-100 rounded-[2.5rem]"
+        >
+          <div className="flex flex-col md:flex-row gap-10 items-start md:items-center">
+            <div className="w-12 h-1 overflow-hidden bg-slate-200"></div>
+            <p className="text-xl md:text-2xl text-slate-600 font-medium leading-relaxed italic">
+              Unlike traditional emergency lighting products that sit unused, Nilumi becomes part of daily household behavior — increasing perceived value, user engagement, and premium product positioning.
+            </p>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

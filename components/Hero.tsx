@@ -39,18 +39,18 @@ const Hero: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-8 w-full relative z-10">
         <div className="max-w-3xl animate-fade-in-up">
-          <div className="inline-flex items-center gap-3 px-4 py-2 border border-nilumi-green/30 bg-nilumi-green/10 backdrop-blur-md text-nilumi-green text-[11px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.4em] mb-8 rounded-full">
+          <div className="inline-flex items-center gap-3 px-4 py-2 border border-nilumi-green/30 bg-nilumi-green/10 backdrop-blur-md text-nilumi-green text-[10px] uppercase mb-8 rounded-full font-medium-header tracking-premium">
             <span className="w-1.5 h-1.5 bg-nilumi-green rounded-full animate-pulse shadow-[0_0_8px_#A3C644]"></span>
             Innovation Hub • Patents US 11,852,306 & 12,529,456
           </div>
           
           <h1 className="text-5xl md:text-8xl font-bold text-white mb-8 tracking-tighter leading-[0.85] uppercase font-heading">
-            Never Be Lost <br/>
-            In The <span className="nilumi-text-gradient">Dark.</span>
+            The Light Switch That <br/>
+            Works When the Power <span className="nilumi-text-gradient">Doesn’t.</span>
           </h1>
           
           <p className="text-lg md:text-xl text-slate-300 mb-12 leading-relaxed font-medium tracking-wide max-w-2xl opacity-90 border-l-2 border-nilumi-green/40 pl-6">
-            That moment the power fails shouldn't be a moment of panic. While others are fumbling for a flashlight, Nilumi activates instantly—exactly where your hand naturally reaches.
+            Nilumi is a patented, code-compliant wall switch with a removable, auto-charging flashlight — engineered for licensing integration.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
@@ -59,7 +59,7 @@ const Hero: React.FC = () => {
               href="#contact"
               className="w-full sm:w-auto px-10 py-5 nilumi-gradient text-nilumi-navy text-[10px] font-black uppercase tracking-[0.3em] hover:brightness-110 transition-all flex items-center justify-center shadow-[0_10px_40px_rgba(163,198,68,0.2)] active:scale-95"
             >
-              Partner With Nilumi
+              Request Licensing Brief
             </a>
 
             {/* Secondary CTA: Ghost Style with Green Border */}
@@ -70,7 +70,7 @@ const Hero: React.FC = () => {
               <svg className="w-4 h-4 text-nilumi-green group-hover:scale-125 transition-transform" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z" />
               </svg>
-              Watch the Proof
+              Watch 90-Second Overview
             </button>
           </div>
         </div>

@@ -4,14 +4,50 @@
 
 @layer base {
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     scroll-behavior: smooth;
     background-color: #0B0F19; /* nilumi-navy */
     color: white;
   }
   
   h1, h2, h3, .font-heading {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700; /* Montserrat Bold */
+  }
+
+  /* Body text defaults */
+  p, .font-body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400; /* Montserrat Regular */
+  }
+
+  /* Secondary Navigation & Sub-headers */
+  .font-medium-header {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500; /* Montserrat Medium */
+  }
+
+  /* Technical specs & summaries */
+  .font-technical {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+  }
+
+  /* Tracking for all-caps sub-headers */
+  .tracking-premium {
+    letter-spacing: 0.1em; /* 10% tracking */
+  }
+
+  /* Numbers consistency */
+  .font-geometric-numbers {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+  }
+}
+
+@layer utilities {
+  .leading-generous {
+    line-height: 1.5;
   }
 }
 
