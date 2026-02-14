@@ -15,7 +15,7 @@ const Hero: React.FC = () => {
   }, [isVideoModalOpen]);
 
   return (
-    <section className="relative h-screen min-h-[750px] w-full flex items-end pb-32 overflow-hidden bg-nilumi-navy">
+    <section className="relative min-h-[100dvh] w-full flex items-start pt-32 pb-12 md:items-end md:pb-32 md:pt-0 overflow-hidden bg-nilumi-navy">
       {/* Background Video Layer */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[115%] h-[115%] scale-110">
@@ -39,7 +39,7 @@ const Hero: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-8 w-full relative z-10">
         <div className="max-w-3xl animate-fade-in-up">
-          <div className="inline-flex items-center gap-3 px-4 py-1.5 border border-nilumi-green/30 bg-nilumi-green/10 backdrop-blur-md text-nilumi-green text-[9px] font-black uppercase tracking-[0.4em] mb-8 rounded-full">
+          <div className="inline-flex items-center gap-3 px-4 py-2 border border-nilumi-green/30 bg-nilumi-green/10 backdrop-blur-md text-nilumi-green text-[11px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.4em] mb-8 rounded-full">
             <span className="w-1.5 h-1.5 bg-nilumi-green rounded-full animate-pulse shadow-[0_0_8px_#A3C644]"></span>
             Innovation Hub • Patents US 11,852,306 & 12,529,456
           </div>
