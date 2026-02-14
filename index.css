@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
+    background-color: #0B0F19; /* nilumi-navy */
+    color: white;
+  }
+  
+  h1, h2, h3, .font-heading {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+}
+
+@layer components {
+  /* Ensure custom Nilumi utility classes are available */
+  .nilumi-gradient {
+    @apply bg-gradient-to-r from-nilumi-green to-nilumi-teal;
+  }
+
+  .nilumi-text-gradient {
+    @apply bg-gradient-to-r from-nilumi-green to-nilumi-teal bg-clip-text text-transparent;
+  }
+
+  .nilumi-border-gradient {
+    border-image: linear-gradient(to right, #A3C644, #43A49B) 1;
+  }
+}
