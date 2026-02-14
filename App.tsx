@@ -78,7 +78,13 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen transition-colors duration-700">
-      <Navbar scrolled={scrolled} theme={currentTheme} isAuthenticated={isAuthenticated} onLogout={() => setIsAuthenticated(false)} />
+      <Navbar 
+        scrolled={scrolled} 
+        theme={currentTheme} 
+        isAuthenticated={isAuthenticated} 
+        onLogout={() => setIsAuthenticated(false)} 
+        onOpenAI={() => setIsAIOpen(true)}
+      />
       
       <main>
         {/* INITIAL DARK SECTIONS */}

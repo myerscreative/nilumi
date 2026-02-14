@@ -19,6 +19,20 @@ export default {
         sans: ['Inter', 'sans-serif'],
         heading: ['Space Grotesk', 'sans-serif'],
       },
+      animation: {
+        'sparkle': 'sparkle 2s ease-in-out infinite',
+        'float': 'float 3s ease-in-out infinite',
+      },
+      keyframes: {
+        sparkle: {
+          '0%, 100%': { transform: 'scale(1)', opacity: 1 },
+          '50%': { transform: 'scale(1.1) rotate(5deg)', opacity: 0.8 },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        }
+      }
     },
   },
   plugins: [],

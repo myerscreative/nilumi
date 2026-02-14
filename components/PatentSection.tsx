@@ -84,14 +84,14 @@ const PatentSection: React.FC<Props> = ({ theme = 'light' }) => {
 
             <div className="space-y-6">
               <a 
-                href="/docs/11852306.pdf" 
-                download="Nilumi_Patent_11852306.pdf"
+                href="/docs/Nilumi_IP_Market_Brief.pdf" 
+                download="Nilumi_IP_Market_Brief.pdf"
                 className="w-full nilumi-gradient text-[#0F172A] font-black py-6 px-8 rounded-2xl hover:scale-[1.02] transition-all flex items-center justify-center gap-4 text-[11px] uppercase tracking-widest shadow-xl shadow-nilumi-green/20 group"
               >
                 Download Patent Brief
                 <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
               </a>
-              <p className="text-center text-[9px] text-slate-400 uppercase font-black tracking-widest">PDF • 318KB • OFFICIAL PATENT</p>
+              <p className="text-center text-[9px] text-slate-400 uppercase font-black tracking-widest">PDF • 114KB • IP & MARKET BRIEF</p>
             </div>
           </motion.div>
         </div>

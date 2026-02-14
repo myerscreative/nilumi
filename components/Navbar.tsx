@@ -6,9 +6,10 @@ interface NavbarProps {
   theme?: 'dark' | 'light';
   isAuthenticated?: boolean;
   onLogout?: () => void;
+  onOpenAI: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ scrolled, theme = 'dark', isAuthenticated, onLogout }) => {
+const Navbar: React.FC<NavbarProps> = ({ scrolled, theme = 'dark', isAuthenticated, onLogout, onOpenAI }) => {
   const isLight = theme === 'light';
 
   const handleLogout = async () => {
@@ -49,6 +50,16 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, theme = 'dark', isAuthenticat
           <a href="#solution" className={`hover:text-nilumi-teal transition-colors`}>Innovation</a>
           <a href="#features" className={`hover:text-nilumi-teal transition-colors`}>Tech</a>
           <a href="#patent" className={`hover:text-nilumi-teal transition-colors`}>IP</a>
+          <button 
+            onClick={onOpenAI}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#a3cf4a]/30 hover:border-[#a3cf4a] bg-[#a3cf4a]/5 hover:bg-[#a3cf4a]/10 text-[#a3cf4a] transition-all group/ai"
+          >
+            <svg className="w-3 h-3 group-hover/ai:scale-110 transition-transform" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 3L10.5 8.5L5 10L10.5 11.5L12 17L13.5 11.5L19 10L13.5 8.5L12 3Z" />
+              <path d="M19 14L18.25 16.75L15.5 17.5L18.25 18.25L19 21L19.75 18.25L22.5 17.5L19.75 16.75L19 14Z" />
+            </svg>
+            Ask AI
+          </button>
         </div>
 
         <div className="flex items-center gap-4">
