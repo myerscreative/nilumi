@@ -44,16 +44,16 @@ const Hero: React.FC = () => {
             Innovation Hub • Patents US 11,852,306 & 12,529,456
           </div>
           
-          <h1 className="text-5xl md:text-8xl font-bold text-white mb-8 tracking-tighter leading-[0.85] uppercase font-heading">
-            The Light Switch That <br/>
-            Works When the Power <span className="nilumi-text-gradient">Doesn’t.</span>
+          <h1 className="text-[2.7rem] md:text-8xl font-bold text-white mb-6 md:mb-8 tracking-tighter leading-[1.1] md:leading-[0.85] uppercase font-heading flex flex-col gap-2 md:block">
+            <span>The Light Switch That</span>
+            <span>Works When the Power <span className="nilumi-text-gradient">Doesn’t.</span></span>
           </h1>
           
-          <p className="text-lg md:text-xl text-slate-300 mb-12 leading-relaxed font-medium tracking-wide max-w-2xl opacity-90 border-l-2 border-nilumi-green/40 pl-6">
+          <p className="text-lg md:text-xl text-slate-300 mt-6 md:mt-0 mb-12 leading-[1.7] md:leading-relaxed font-medium tracking-wide max-w-2xl opacity-90 border-l-2 border-nilumi-green/40 pl-6">
             Nilumi is a patented, code-compliant wall switch with a removable, auto-charging flashlight — engineered for licensing integration.
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+          <div className="flex flex-col sm:flex-row items-center gap-6 md:gap-6">
             {/* Primary CTA: Nilumi Gradient */}
             <a 
               href="#contact"
