@@ -17,16 +17,24 @@ const Hero: React.FC = () => {
   return (
     <section className="relative min-h-[100dvh] w-full flex items-start pt-32 pb-12 md:items-end md:pb-32 md:pt-0 overflow-hidden bg-nilumi-navy">
       {/* Background Video Layer */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[115%] h-[115%] scale-110">
-          <iframe
-            src="https://customer-emrwm711leustqqq.cloudflarestream.com/ac89cfff1d3794eb6caca090eea6987b/iframe?muted=true&preload=true&loop=true&autoplay=true&controls=false&playsinline=true&poster=https%3A%2F%2Fcustomer-emrwm711leustqqq.cloudflarestream.com%2Fac89cfff1d3794eb6caca090eea6987b%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
-            loading="lazy"
-            style={{ border: 'none', position: 'absolute', top: 0, left: 0, height: '100%', width: '100%' }}
-            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
-            className="opacity-50 grayscale-[0.3]"
-          ></iframe>
-        </div>
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none bg-nilumi-navy">
+        <iframe
+          src="https://customer-emrwm711leustqqq.cloudflarestream.com/ac89cfff1d3794eb6caca090eea6987b/iframe?muted=true&preload=true&loop=true&autoplay=true&controls=false&playsinline=true&poster=https%3A%2F%2Fcustomer-emrwm711leustqqq.cloudflarestream.com%2Fac89cfff1d3794eb6caca090eea6987b%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
+          loading="lazy"
+          style={{ 
+            border: 'none', 
+            position: 'absolute', 
+            top: '50%', 
+            left: '50%', 
+            transform: 'translate(-50%, -50%)', 
+            height: '100%', 
+            width: '177.78vh',
+            minWidth: '100%',
+            minHeight: '100%'
+          }}
+          allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
+          className="opacity-50 grayscale-[0.3] scale-105"
+        ></iframe>
         
         {/* Brand Anchor: Safety Glow (Green/Teal) */}
         <div className="absolute bottom-[25%] right-[15%] w-[45vw] h-[45vw] bg-nilumi-green/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow"></div>
@@ -44,12 +52,15 @@ const Hero: React.FC = () => {
             Innovation Hub • Patents US 11,852,306 & 12,529,456
           </div>
           
-          <h1 className="text-[2.7rem] md:text-8xl font-bold text-white mb-6 md:mb-8 tracking-tighter leading-[1.1] md:leading-[0.85] uppercase font-heading flex flex-col gap-2 md:block">
-            <span>The Light Switch That</span>
-            <span>Works When the Power <span className="nilumi-text-gradient">Doesn’t.</span></span>
+          <h1 className="text-[2.7rem] md:text-8xl font-bold text-white mb-6 md:mb-8 tracking-tighter leading-[1.1] md:leading-[0.85] uppercase font-heading">
+            The Light Switch <br className="md:hidden" />
+            That <br className="hidden md:block" />
+            Works <br className="md:hidden" />
+            When the Power <br className="md:hidden" />
+            <span className="nilumi-text-gradient">Doesn’t.</span>
           </h1>
           
-          <p className="text-lg md:text-xl text-slate-300 mt-6 md:mt-0 mb-12 leading-[1.7] md:leading-relaxed font-medium tracking-wide max-w-2xl opacity-90 border-l-2 border-nilumi-green/40 pl-6">
+          <p className="text-lg md:text-xl text-slate-300 mb-12 leading-[1.7] md:leading-relaxed font-medium tracking-wide max-w-2xl opacity-90 border-l-2 border-nilumi-green/40 pl-6">
             Nilumi is a patented, code-compliant wall switch with a removable, auto-charging flashlight — engineered for licensing integration.
           </p>
           
