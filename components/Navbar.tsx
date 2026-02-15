@@ -24,82 +24,84 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, theme = 'dark', isAuthenticat
   };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
-      scrolled 
-        ? isLight 
-          ? 'bg-white/80 backdrop-blur-xl py-3 md:py-4 shadow-xl border-b border-slate-200'
-          : 'bg-[#0f172a]/90 backdrop-blur-xl py-3 md:py-4 shadow-2xl border-b border-white/5' 
-        : 'bg-transparent py-5 md:py-8'
-    }`}>
-      <div className="max-w-7xl mx-auto px-6 md:px-8 flex items-center justify-between">
-        <div className="flex items-center gap-3 md:gap-4 group cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-          <div className="w-8 h-8 md:w-9 md:h-9 overflow-hidden rounded-sm group-hover:scale-105 transition-transform border border-white/10 shadow-lg">
-            <img 
-              src="/images/nilumi-logo.png" 
-              className="w-full h-full object-contain"
-            />
-          </div>
-          <div className="flex flex-col">
-            <span className={`text-base md:text-lg font-bold tracking-[0.3em] font-heading uppercase transition-all leading-none ${isLight ? 'text-nilumi-navy' : 'text-white'}`}>NILUMI</span>
-            {isAuthenticated && (
-              <span className="hidden md:block text-[7px] font-bold tracking-[0.2em] text-[#a3cf4a] uppercase mt-1">Secure Portal</span>
-            )}
-          </div>
-        </div>
-        
-        <div className={`hidden md:flex items-center gap-10 text-[9px] uppercase transition-colors font-medium-header tracking-premium ${isLight ? 'text-slate-500' : 'text-white/60'}`}>
-          <a href="#problem" className={`hover:text-nilumi-teal transition-colors`}>The Gap</a>
-          <a href="#solution" className={`hover:text-nilumi-teal transition-colors`}>Innovation</a>
-          <a href="#features" className={`hover:text-nilumi-teal transition-colors`}>Tech</a>
-          <a href="#patent" className={`hover:text-nilumi-teal transition-colors`}>IP</a>
-          <button 
-            onClick={onOpenAI}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#a3cf4a]/30 hover:border-[#a3cf4a] bg-[#a3cf4a]/5 hover:bg-[#a3cf4a]/10 text-[#a3cf4a] transition-all group/ai"
-          >
-            <svg className="w-3 h-3 group-hover/ai:scale-110 transition-transform" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 3L10.5 8.5L5 10L10.5 11.5L12 17L13.5 11.5L19 10L13.5 8.5L12 3Z" />
-              <path d="M19 14L18.25 16.75L15.5 17.5L18.25 18.25L19 21L19.75 18.25L22.5 17.5L19.75 16.75L19 14Z" />
-            </svg>
-            Ask AI
-          </button>
-        </div>
-
-        <div className="flex items-center gap-3 md:gap-4">
-          {isAuthenticated && (
-            <button
-              onClick={handleLogout}
-              className={`hidden md:block text-[9px] font-bold uppercase tracking-[0.2em] transition-colors px-4 py-2 rounded-sm border ${
-                isLight 
-                  ? 'text-slate-500 border-slate-200 hover:bg-slate-50' 
-                  : 'text-white/60 border-white/10 hover:bg-white/5'
-              }`}
-            >
-              Logout
-            </button>
-          )}
-          <a 
-            href="#contact"
-            className={`${isLight ? 'bg-nilumi-navy text-white hover:bg-slate-800' : 'bg-white text-slate-950 hover:bg-slate-100'} px-5 md:px-7 py-2 md:py-2.5 rounded-sm text-[8px] md:text-[9px] font-bold uppercase tracking-[0.2em] transition-all active:scale-95 shadow-xl`}
-          >
-            Request Demo
-          </a>
-
-          {/* Hamburger Menu Toggle */}
-          <button 
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className={`md:hidden p-2 transition-colors ${isLight ? 'text-nilumi-navy' : 'text-white'}`}
-          >
-            <div className="w-5 h-4 flex flex-col justify-between items-end">
-              <span className={`h-[1.5px] transition-all duration-300 ${isMenuOpen ? 'w-5 translate-y-[7.5px] rotate-45' : 'w-5'} ${isLight ? 'bg-nilumi-navy' : 'bg-white'}`}></span>
-              <span className={`h-[1.5px] transition-all duration-300 ${isMenuOpen ? 'opacity-0' : 'w-3'} ${isLight ? 'bg-nilumi-navy' : 'bg-white'}`}></span>
-              <span className={`h-[1.5px] transition-all duration-300 ${isMenuOpen ? 'w-5 -translate-y-[7.5px] -rotate-45' : 'w-4'} ${isLight ? 'bg-nilumi-navy' : 'bg-white'}`}></span>
+    <>
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
+        scrolled 
+          ? isLight 
+            ? 'bg-white/80 backdrop-blur-xl py-3 md:py-4 shadow-xl border-b border-slate-200'
+            : 'bg-[#0f172a]/90 backdrop-blur-xl py-3 md:py-4 shadow-2xl border-b border-white/5' 
+          : 'bg-transparent py-5 md:py-8'
+      }`}>
+        <div className="max-w-7xl mx-auto px-6 md:px-8 flex items-center justify-between">
+          <div className="flex items-center gap-3 md:gap-4 group cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
+            <div className="w-8 h-8 md:w-9 md:h-9 overflow-hidden rounded-sm group-hover:scale-105 transition-transform border border-white/10 shadow-lg">
+              <img 
+                src="/images/nilumi-logo.png" 
+                className="w-full h-full object-contain"
+              />
             </div>
-          </button>
-        </div>
-      </div>
+            <div className="flex flex-col">
+              <span className={`text-base md:text-lg font-bold tracking-[0.3em] font-heading uppercase transition-all leading-none ${isLight ? 'text-nilumi-navy' : 'text-white'}`}>NILUMI</span>
+              {isAuthenticated && (
+                <span className="hidden md:block text-[7px] font-bold tracking-[0.2em] text-[#a3cf4a] uppercase mt-1">Secure Portal</span>
+              )}
+            </div>
+          </div>
+          
+          <div className={`hidden md:flex items-center gap-10 text-[9px] uppercase transition-colors font-medium-header tracking-premium ${isLight ? 'text-slate-500' : 'text-white/60'}`}>
+            <a href="#problem" className={`hover:text-nilumi-teal transition-colors`}>The Gap</a>
+            <a href="#solution" className={`hover:text-nilumi-teal transition-colors`}>Innovation</a>
+            <a href="#features" className={`hover:text-nilumi-teal transition-colors`}>Tech</a>
+            <a href="#patent" className={`hover:text-nilumi-teal transition-colors`}>IP</a>
+            <button 
+              onClick={onOpenAI}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#a3cf4a]/30 hover:border-[#a3cf4a] bg-[#a3cf4a]/5 hover:bg-[#a3cf4a]/10 text-[#a3cf4a] transition-all group/ai"
+            >
+              <svg className="w-3 h-3 group-hover/ai:scale-110 transition-transform" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 3L10.5 8.5L5 10L10.5 11.5L12 17L13.5 11.5L19 10L13.5 8.5L12 3Z" />
+                <path d="M19 14L18.25 16.75L15.5 17.5L18.25 18.25L19 21L19.75 18.25L22.5 17.5L19.75 16.75L19 14Z" />
+              </svg>
+              Ask AI
+            </button>
+          </div>
 
-      {/* Mobile Menu Overlay */}
-      <div className={`fixed inset-0 z-40 md:hidden transition-all duration-500 ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+          <div className="flex items-center gap-3 md:gap-4">
+            {isAuthenticated && (
+              <button
+                onClick={handleLogout}
+                className={`hidden md:block text-[9px] font-bold uppercase tracking-[0.2em] transition-colors px-4 py-2 rounded-sm border ${
+                  isLight 
+                    ? 'text-slate-500 border-slate-200 hover:bg-slate-50' 
+                    : 'text-white/60 border-white/10 hover:bg-white/5'
+                }`}
+              >
+                Logout
+              </button>
+            )}
+            <a 
+              href="#contact"
+              className={`${isLight ? 'bg-nilumi-navy text-white hover:bg-slate-800' : 'bg-white text-slate-950 hover:bg-slate-100'} px-5 md:px-7 py-2 md:py-2.5 rounded-sm text-[8px] md:text-[9px] font-bold uppercase tracking-[0.2em] transition-all active:scale-95 shadow-xl`}
+            >
+              Request Demo
+            </a>
+
+            {/* Hamburger Menu Toggle */}
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className={`md:hidden p-2 transition-colors ${isLight ? 'text-nilumi-navy' : 'text-white'}`}
+            >
+              <div className="w-5 h-4 flex flex-col justify-between items-end">
+                <span className={`h-[1.5px] transition-all duration-300 ${isMenuOpen ? 'w-5 translate-y-[7.5px] rotate-45' : 'w-5'} ${isLight ? 'bg-nilumi-navy' : 'bg-white'}`}></span>
+                <span className={`h-[1.5px] transition-all duration-300 ${isMenuOpen ? 'opacity-0' : 'w-3'} ${isLight ? 'bg-nilumi-navy' : 'bg-white'}`}></span>
+                <span className={`h-[1.5px] transition-all duration-300 ${isMenuOpen ? 'w-5 -translate-y-[7.5px] -rotate-45' : 'w-4'} ${isLight ? 'bg-nilumi-navy' : 'bg-white'}`}></span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile Menu Overlay - Outside nav to prevent Safari clipping */}
+      <div className={`fixed inset-0 z-[60] md:hidden transition-all duration-500 ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
         <div className="absolute inset-0 bg-[#0f172a]/95 backdrop-blur-2xl" onClick={() => setIsMenuOpen(false)}></div>
         <div className={`absolute right-0 top-0 bottom-0 w-64 bg-[#0f172a] border-l border-white/5 p-8 pt-24 flex flex-col gap-8 transition-transform duration-500 transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
           <div className="flex flex-col gap-6 text-[11px] uppercase tracking-premium text-white/70 font-medium">
@@ -135,7 +137,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, theme = 'dark', isAuthenticat
           </div>
         </div>
       </div>
-    </nav>
+    </>
   );
 };
 

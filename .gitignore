@@ -123,3 +123,9 @@ dist
 
 # IntelliJ
 .idea/
+
+# Affinity Lock Files
+*~lock~
+
+# Supabase
+supabase/.temp/
