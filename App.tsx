@@ -31,22 +31,27 @@ const App: React.FC = () => {
 
   // Initialize auth and listeners
   useEffect(() => {
-    // Capture hash immediately before Supabase might consume it
-    const initialHash = window.location.hash;
+    // 1. Capture hash immediately on mount
+    const hashOnLoad = window.location.hash;
+    const isAuthAction = hashOnLoad.includes('type=recovery') || 
+                        hashOnLoad.includes('type=invite') || 
+                        hashOnLoad.includes('type=signup') || 
+                        hashOnLoad === '#reset-password';
+
+    // Set initial view synchronously to prevent flickering or mid-render shifts
+    if (isAuthAction) {
+      setView('reset-password');
+    } else if (hashOnLoad === '#admin') {
+      setView('admin');
+    }
 
     const initializeAuth = async () => {
-      // 1. Check current session
       const { data: { session } } = await supabase.auth.getSession();
       setIsAuthenticated(!!session?.user);
       
-      // 2. Handle initial hash routing
-      if (initialHash === '#admin') {
-        setView('admin');
-      } else if (initialHash === '#reset-password' || initialHash.includes('type=recovery') || initialHash.includes('type=invite') || initialHash.includes('type=signup')) {
-        setView('reset-password');
-      } else {
-        setView('landing');
-      }
+      // If we are authenticated but on the landing, we stay there.
+      // If we have an auth action hash, initializeAuth won't override setView('reset-password')
+      // but it will establish the session needed for ResetPasswordPage.
     };
 
     initializeAuth();
@@ -57,8 +62,10 @@ const App: React.FC = () => {
       
       if (event === 'SIGNED_IN' && session) {
         setIsAuthenticated(true);
-        // If we detect an invitation or recovery context, shift to reset view
-        if (initialHash.includes('type=invite') || initialHash.includes('type=recovery') || window.location.hash.includes('type=invite') || window.location.hash.includes('type=recovery')) {
+        // If we are catching a signed in event during an invite/recovery, force the view
+        const currentHash = window.location.hash;
+        if (hashOnLoad.includes('type=invite') || hashOnLoad.includes('type=recovery') || 
+            currentHash.includes('type=invite') || currentHash.includes('type=recovery')) {
           setView('reset-password');
         }
       } else if (event === 'SIGNED_OUT') {
@@ -66,7 +73,8 @@ const App: React.FC = () => {
         setView('landing');
       } else if (event === 'PASSWORD_RECOVERY') {
         setView('reset-password');
-        setIsAuthenticated(false); // Keep on reset page even if technically "logged in" for recovery
+        // Note: We don't necessarily want to set IsAuthenticated false here 
+        // because the user DOES have a session, which ResetPasswordPage needs.
       }
     });
 
@@ -78,7 +86,9 @@ const App: React.FC = () => {
       } else if (hash === '#reset-password' || hash.includes('type=recovery') || hash.includes('type=invite') || hash.includes('type=signup')) {
         setView('reset-password');
       } else if (!hash) {
-        setView('landing');
+        // ONLY reset to landing if we aren't currently in an auth-specific view
+        // to prevent Supabase's automatic hash clearing from kicking us to landing/login
+        setView(prev => (prev === 'reset-password' || prev === 'admin') ? prev : 'landing');
       }
     };
 
