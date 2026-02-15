@@ -28,7 +28,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen, onClo
       setStatus('error');
       // Handle the specific rate limit error gracefully
       if (error.message?.includes('rate limit')) {
-         setMessage('For security, please wait 60 seconds before requesting another reset link.');
+         setMessage("We've received your request! To protect your account, please wait just a moment before requesting another link. We'll be ready for you again in about 60 seconds.");
       } else {
          setMessage(error.message || 'Failed to send recovery email. Please try again.');
       }
