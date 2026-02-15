@@ -74,6 +74,18 @@ const App: React.FC = () => {
   });
 
   if (isAuthenticated === null) {
+    // If we're on reset-password page, don't show loading spinner
+    if (view === 'reset-password') {
+      return (
+        <ResetPasswordPage 
+          onComplete={() => {
+            window.location.hash = '';
+            setView('landing');
+          }} 
+        />
+      );
+    }
+    
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="w-10 h-10 border-4 border-[#a3cf4a]/20 border-t-[#a3cf4a] rounded-full animate-spin" />
@@ -81,6 +93,7 @@ const App: React.FC = () => {
     );
   }
 
+  // Check for reset-password view BEFORE checking authentication
   if (view === 'reset-password') {
     return (
       <ResetPasswordPage 
