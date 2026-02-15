@@ -32,6 +32,13 @@ const App: React.FC = () => {
   // Check auth status on mount
   useEffect(() => {
     const checkAuth = async () => {
+      // Auto-detect invitation or recovery links from Supabase
+      const hash = window.location.hash;
+      if (hash.includes('type=recovery') || hash.includes('type=invite') || hash.includes('type=signup')) {
+        window.location.hash = '#reset-password';
+        return;
+      }
+
       // If user is on reset-password page, skip auth check
       // Supabase will handle the auth token from the email link
       if (window.location.hash === '#reset-password') {
