@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { resetPasswordForEmail, requestManualAuthHelp } from '../services/supabase';
 
@@ -14,6 +14,19 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen, onClo
   const [message, setMessage] = useState('');
   const [isRequestingHelp, setIsRequestingHelp] = useState(false);
   const [showHelpOption, setShowHelpOption] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (cooldown > 0) {
+      timer = setInterval(() => {
+        setCooldown((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [cooldown]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,13 +38,15 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen, onClo
       await resetPasswordForEmail(email);
       setStatus('success');
       setMessage('Recovery email sent. Please check your inbox.');
+      setCooldown(60); // Set 60s cooldown on success
     } catch (error: any) {
       console.error("Password reset error:", error);
       setStatus('error');
       // Handle the specific rate limit error gracefully
       if (error.message?.includes('rate limit')) {
-         setMessage("We've received your request! To protect your account, Supabase restricts how many reset links can be sent per hour. If you don't see an email in your inbox or spam folder yet, please try again in about an hour.");
+         setMessage("To protect your account, Supabase restricts how many reset links can be sent per hour. If you don't see an email yet, please check your spam folder or try again in an hour.");
          setShowHelpOption(true);
+         setCooldown(60); // Also set cooldown on rate limit error
       } else {
          setMessage(error.message || 'Failed to send recovery email. Please try again.');
       }
@@ -173,13 +188,15 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen, onClo
                     </button>
                     <button
                       type="submit"
-                      disabled={isLoading}
-                      className="flex-1 bg-gradient-to-r from-[#a3cf4a] to-[#2bb673] text-slate-950 font-bold py-3 rounded-xl hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50 disabled:scale-100 flex items-center justify-center"
+                      disabled={isLoading || cooldown > 0}
+                      className="flex-1 bg-gradient-to-r from-[#a3cf4a] to-[#2bb673] text-slate-950 font-bold py-3 rounded-xl hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50 disabled:scale-100 flex items-center justify-center text-sm"
                     >
                       {isLoading ? (
                         <div className="w-5 h-5 border-2 border-slate-950/30 border-t-slate-950 rounded-full animate-spin" />
+                      ) : cooldown > 0 ? (
+                        `Wait ${cooldown}s`
                       ) : (
-                        'Send specific link'
+                        'Send Reset Link'
                       )}
                     </button>
                   </div>
