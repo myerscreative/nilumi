@@ -64,25 +64,28 @@ const Hero: React.FC = () => {
             Nilumi is a patented, code-compliant wall switch with a removable, auto-charging flashlight — engineered for licensing integration.
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center gap-6 md:gap-6">
-            {/* Primary CTA: Nilumi Gradient */}
+          <div className="flex flex-col sm:flex-row items-center gap-6 md:gap-8">
+            {/* Primary High-Impact CTA: Video Overview */}
+            <button 
+              onClick={() => setIsVideoModalOpen(true)}
+              className="w-full sm:w-auto px-10 py-5 bg-white text-nilumi-navy text-[10px] font-black uppercase tracking-[0.3em] hover:bg-slate-100 transition-all flex items-center justify-center gap-3 active:scale-95 group relative overflow-hidden animate-pulse-glow shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+            >
+              <span className="relative z-10 flex items-center gap-3">
+                <svg className="w-5 h-5 text-nilumi-navy group-hover:scale-125 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+                Watch 90-Second Overview
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            </button>
+
+            {/* Secondary CTA: Licensing Brief */}
             <a 
               href="#contact"
-              className="w-full sm:w-auto px-10 py-5 nilumi-gradient text-nilumi-navy text-[10px] font-black uppercase tracking-[0.3em] hover:brightness-110 transition-all flex items-center justify-center shadow-[0_10px_40px_rgba(163,198,68,0.2)] active:scale-95"
+              className="w-full sm:w-auto px-10 py-5 bg-transparent border border-nilumi-green/40 text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-nilumi-green/5 transition-all flex items-center justify-center active:scale-95 backdrop-blur-sm"
             >
               Request Licensing Brief
             </a>
-
-            {/* Secondary CTA: Ghost Style with Green Border */}
-            <button 
-              onClick={() => setIsVideoModalOpen(true)}
-              className="w-full sm:w-auto px-10 py-5 bg-transparent border border-nilumi-green/40 text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-nilumi-green/5 transition-all flex items-center justify-center gap-3 backdrop-blur-sm active:scale-95 group"
-            >
-              <svg className="w-4 h-4 text-nilumi-green group-hover:scale-125 transition-transform" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-              Watch 90-Second Overview
-            </button>
           </div>
         </div>
       </div>
@@ -155,6 +158,13 @@ const Hero: React.FC = () => {
         @keyframes pulseSlow {
           0%, 100% { opacity: 0.1; transform: scale(1); }
           50% { opacity: 0.25; transform: scale(1.15); }
+        }
+        .animate-pulse-glow {
+          animation: pulseGlow 3s infinite ease-in-out;
+        }
+        @keyframes pulseGlow {
+          0%, 100% { box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+          50% { box-shadow: 0 0 40px rgba(255,255,255,0.25); }
         }
       `}</style>
     </section>
