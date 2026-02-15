@@ -6,6 +6,7 @@ import Hero from './components/Hero';
 import Problem from './components/Problem';
 import SuccessSection from './components/SuccessSection';
 import PhaseShift from './components/PhaseShift';
+import HowItWorks from './components/HowItWorks';
 import ExpertGuide from './components/ExpertGuide';
 import UseCases from './components/UseCases';
 import FeatureDeepDive from './components/FeatureDeepDive';
@@ -17,11 +18,12 @@ import Footer from './components/Footer';
 import AIAssistant from './components/AIAssistant';
 import AdminDashboard from './components/AdminDashboard';
 import LoginPage from './components/LoginPage';
+import ResetPasswordPage from './components/ResetPasswordPage';
 import { getCurrentUser } from './services/supabase';
 
 const App: React.FC = () => {
-  const [view, setView] = useState<'landing' | 'admin'>('landing');
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(true); // null = checking
+  const [view, setView] = useState<'landing' | 'admin' | 'reset-password'>('landing');
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null); // null = checking
   const [scrolled, setScrolled] = useState(false);
   const [currentTheme, setCurrentTheme] = useState<'dark' | 'light'>('dark');
   const { scrollYProgress } = useScroll();
@@ -29,8 +31,11 @@ const App: React.FC = () => {
 
   // Check auth status on mount
   useEffect(() => {
-    // FOR CRAWLER AUDIT: Bypass login check
-    setIsAuthenticated(true);
+    const checkAuth = async () => {
+      const user = await getCurrentUser();
+      setIsAuthenticated(!!user);
+    };
+    checkAuth();
   }, []);
 
   // Handle hash-based routing
@@ -38,6 +43,8 @@ const App: React.FC = () => {
     const handleHash = () => {
       if (window.location.hash === '#admin') {
         setView('admin');
+      } else if (window.location.hash === '#reset-password') {
+        setView('reset-password');
       } else {
         setView('landing');
       }
@@ -67,6 +74,17 @@ const App: React.FC = () => {
     );
   }
 
+  if (view === 'reset-password') {
+    return (
+      <ResetPasswordPage 
+        onComplete={() => {
+          window.location.hash = '';
+          setView('landing');
+        }} 
+      />
+    );
+  }
+
   if (!isAuthenticated) {
     return <LoginPage onLogin={() => setIsAuthenticated(true)} />;
   }
@@ -91,6 +109,7 @@ const App: React.FC = () => {
         <Problem />
         <SuccessSection />
         <PhaseShift />
+        <HowItWorks onOpenAI={() => setIsAIOpen(true)} />
         <UseCases />
         <FeatureDeepDive theme={currentTheme} />
         <CradleFocus theme={currentTheme} />
