@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { updatePassword } from '../services/supabase';
+import { updatePassword, supabase } from '../services/supabase';
 
 interface ResetPasswordPageProps {
   onComplete: () => void;
@@ -36,6 +36,13 @@ const ResetPasswordPage: React.FC<ResetPasswordPageProps> = ({ onComplete }) => 
     setMessage('');
 
     try {
+      // Ensure we have a session before attempting update
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        throw new Error('Your reset link may have expired or is invalid. Please request a new one.');
+      }
+
       await updatePassword(newPassword);
 
       setStatus('success');

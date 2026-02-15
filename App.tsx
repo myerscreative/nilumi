@@ -19,7 +19,7 @@ import AIAssistant from './components/AIAssistant';
 import AdminDashboard from './components/AdminDashboard';
 import LoginPage from './components/LoginPage';
 import ResetPasswordPage from './components/ResetPasswordPage';
-import { getCurrentUser } from './services/supabase';
+import { getCurrentUser, supabase } from './services/supabase';
 
 const App: React.FC = () => {
   const [view, setView] = useState<'landing' | 'admin' | 'reset-password'>('landing');
@@ -29,33 +29,14 @@ const App: React.FC = () => {
   const { scrollYProgress } = useScroll();
   const [isAIOpen, setIsAIOpen] = useState(false);
 
-  // Check auth status on mount
+  // Initialize auth and listeners
   useEffect(() => {
-    const checkAuth = async () => {
-      // Detect invitation or recovery links from Supabase
-      const hash = window.location.hash;
-      if (hash.includes('type=recovery') || hash.includes('type=invite') || hash.includes('type=signup')) {
-        setView('reset-password');
-        setIsAuthenticated(false); // Bypass login page
-        return;
-      }
-
-      // If user is on reset-password page, skip auth check
-      // Supabase will handle the auth token from the email link
-      if (window.location.hash === '#reset-password') {
-        setIsAuthenticated(false); // Set to false to bypass login page
-        return;
-      }
+    const initializeAuth = async () => {
+      // 1. Check current session
+      const { data: { session } } = await supabase.auth.getSession();
+      setIsAuthenticated(!!session?.user);
       
-      const user = await getCurrentUser();
-      setIsAuthenticated(!!user);
-    };
-    checkAuth();
-  }, []);
-
-  // Handle hash-based routing
-  useEffect(() => {
-    const handleHash = () => {
+      // 2. Handle initial hash routing
       const hash = window.location.hash;
       if (hash === '#admin') {
         setView('admin');
@@ -65,9 +46,41 @@ const App: React.FC = () => {
         setView('landing');
       }
     };
-    handleHash();
+
+    initializeAuth();
+
+    // 3. Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('Auth event:', event, !!session);
+      
+      if (event === 'SIGNED_IN' && session) {
+        setIsAuthenticated(true);
+      } else if (event === 'SIGNED_OUT') {
+        setIsAuthenticated(false);
+        setView('landing');
+      } else if (event === 'PASSWORD_RECOVERY') {
+        setView('reset-password');
+        setIsAuthenticated(false); // Keep on reset page even if technically "logged in" for recovery
+      }
+    });
+
+    // 4. Handle hash changes for navigation
+    const handleHash = () => {
+      const hash = window.location.hash;
+      if (hash === '#admin') {
+        setView('admin');
+      } else if (hash === '#reset-password' || hash.includes('type=recovery') || hash.includes('type=invite') || hash.includes('type=signup')) {
+        setView('reset-password');
+      } else if (!hash) {
+        setView('landing');
+      }
+    };
+
     window.addEventListener('hashchange', handleHash);
-    return () => window.removeEventListener('hashchange', handleHash);
+    return () => {
+      subscription.unsubscribe();
+      window.removeEventListener('hashchange', handleHash);
+    };
   }, []);
 
   // Sync the React state with the scroll position for navbar/component logic
