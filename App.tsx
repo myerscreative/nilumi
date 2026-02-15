@@ -31,16 +31,18 @@ const App: React.FC = () => {
 
   // Initialize auth and listeners
   useEffect(() => {
+    // Capture hash immediately before Supabase might consume it
+    const initialHash = window.location.hash;
+
     const initializeAuth = async () => {
       // 1. Check current session
       const { data: { session } } = await supabase.auth.getSession();
       setIsAuthenticated(!!session?.user);
       
       // 2. Handle initial hash routing
-      const hash = window.location.hash;
-      if (hash === '#admin') {
+      if (initialHash === '#admin') {
         setView('admin');
-      } else if (hash === '#reset-password' || hash.includes('type=recovery') || hash.includes('type=invite') || hash.includes('type=signup')) {
+      } else if (initialHash === '#reset-password' || initialHash.includes('type=recovery') || initialHash.includes('type=invite') || initialHash.includes('type=signup')) {
         setView('reset-password');
       } else {
         setView('landing');
@@ -55,6 +57,10 @@ const App: React.FC = () => {
       
       if (event === 'SIGNED_IN' && session) {
         setIsAuthenticated(true);
+        // If we detect an invitation or recovery context, shift to reset view
+        if (initialHash.includes('type=invite') || initialHash.includes('type=recovery') || window.location.hash.includes('type=invite') || window.location.hash.includes('type=recovery')) {
+          setView('reset-password');
+        }
       } else if (event === 'SIGNED_OUT') {
         setIsAuthenticated(false);
         setView('landing');
