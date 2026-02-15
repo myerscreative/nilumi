@@ -57,24 +57,28 @@ const App: React.FC = () => {
     initializeAuth();
 
     // 3. Listen for auth state changes
+    let invitationHandled = false;
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log('Auth event:', event, !!session);
       
       if (event === 'SIGNED_IN' && session) {
         setIsAuthenticated(true);
-        // If we are catching a signed in event during an invite/recovery, force the view
+        // If we are catching a signed in event during an invite/recovery, force the view ONLY ONCE
         const currentHash = window.location.hash;
-        if (hashOnLoad.includes('type=invite') || hashOnLoad.includes('type=recovery') || 
-            currentHash.includes('type=invite') || currentHash.includes('type=recovery')) {
+        const isInvitation = hashOnLoad.includes('type=invite') || hashOnLoad.includes('type=recovery') || 
+                           currentHash.includes('type=invite') || currentHash.includes('type=recovery');
+
+        if (isInvitation && !invitationHandled) {
           setView('reset-password');
+          invitationHandled = true; // Mark as handled so subsequent logins don't loop
         }
       } else if (event === 'SIGNED_OUT') {
         setIsAuthenticated(false);
         setView('landing');
+        invitationHandled = true; // Also block invitation logic if they explicitly log out
       } else if (event === 'PASSWORD_RECOVERY') {
         setView('reset-password');
-        // Note: We don't necessarily want to set IsAuthenticated false here 
-        // because the user DOES have a session, which ResetPasswordPage needs.
       }
     });
 
