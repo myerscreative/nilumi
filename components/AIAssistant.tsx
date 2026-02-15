@@ -1,5 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { getGeminiResponse } from '../services/geminiService';
 import { saveAIChat } from '../services/supabase';
 import { ChatMessage } from '../types';
@@ -71,12 +73,31 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ isOpen, onToggle }) => {
           <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-950">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] p-3 rounded-xl text-sm leading-relaxed ${
+                <div className={`max-w-[85%] p-4 rounded-xl text-sm leading-relaxed ${
                   m.role === 'user' 
                     ? 'bg-[#2bb673] text-slate-900 font-medium rounded-br-none shadow-lg' 
                     : 'bg-slate-800 text-slate-200 rounded-bl-none border border-slate-700'
                 }`}>
-                  {m.content}
+                  {m.role === 'user' ? (
+                    m.content
+                  ) : (
+                    <div className="markdown-content">
+                      <ReactMarkdown 
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          h3: ({node, ...props}) => <h3 className="text-white font-bold text-base mt-6 mb-2 first:mt-0" {...props} />,
+                          hr: ({node, ...props}) => <hr className="border-slate-700 my-6" {...props} />,
+                          ul: ({node, ...props}) => <ul className="list-disc pl-5 space-y-2 mb-4" {...props} />,
+                          ol: ({node, ...props}) => <ol className="list-decimal pl-5 space-y-2 mb-4" {...props} />,
+                          li: ({node, ...props}) => <li className="mb-1" {...props} />,
+                          p: ({node, ...props}) => <p className="mb-4 last:mb-0 whitespace-pre-wrap" {...props} />,
+                          strong: ({node, ...props}) => <strong className="text-white font-bold" {...props} />,
+                        }}
+                      >
+                        {m.content}
+                      </ReactMarkdown>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
