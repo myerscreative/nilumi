@@ -32,6 +32,13 @@ const App: React.FC = () => {
   // Check auth status on mount
   useEffect(() => {
     const checkAuth = async () => {
+      // If user is on reset-password page, skip auth check
+      // Supabase will handle the auth token from the email link
+      if (window.location.hash === '#reset-password') {
+        setIsAuthenticated(false); // Set to false to bypass login page
+        return;
+      }
+      
       const user = await getCurrentUser();
       setIsAuthenticated(!!user);
     };
