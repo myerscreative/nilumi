@@ -46,6 +46,14 @@ export const updatePassword = async (newPassword: string) => {
   return data;
 };
 
+export const requestManualAuthHelp = async (email: string) => {
+  const { data, error } = await supabase.functions.invoke('request-password-help', {
+    body: { email }
+  });
+  if (error) throw error;
+  return data;
+};
+
 // --- DATA FUNCTIONS ---
 export const getLeads = async () => {
   const { data, error } = await supabase

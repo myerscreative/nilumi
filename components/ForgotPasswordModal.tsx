@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { resetPasswordForEmail } from '../services/supabase';
+import { resetPasswordForEmail, requestManualAuthHelp } from '../services/supabase';
 
 interface ForgotPasswordModalProps {
   isOpen: boolean;
@@ -10,8 +10,10 @@ interface ForgotPasswordModalProps {
 const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'success' | 'error' | 'help_requested'>('idle');
   const [message, setMessage] = useState('');
+  const [isRequestingHelp, setIsRequestingHelp] = useState(false);
+  const [showHelpOption, setShowHelpOption] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,11 +31,26 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen, onClo
       // Handle the specific rate limit error gracefully
       if (error.message?.includes('rate limit')) {
          setMessage("We've received your request! To protect your account, Supabase restricts how many reset links can be sent per hour. If you don't see an email in your inbox or spam folder yet, please try again in about an hour.");
+         setShowHelpOption(true);
       } else {
          setMessage(error.message || 'Failed to send recovery email. Please try again.');
       }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleRequestHelp = async () => {
+    setIsRequestingHelp(true);
+    try {
+      await requestManualAuthHelp(email);
+      setStatus('help_requested');
+      setMessage("Request sent! Robert has been notified and will manually assist you with your access as soon as possible.");
+    } catch (error: any) {
+      console.error("Help request error:", error);
+      setMessage("Failed to send help request. Please try again or contact support directly.");
+    } finally {
+      setIsRequestingHelp(false);
     }
   };
 
@@ -83,6 +100,25 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen, onClo
                     Return to Login
                   </button>
                 </div>
+              ) : status === 'help_requested' ? (
+                <div className="bg-[#a3cf4a]/10 border border-[#a3cf4a]/20 p-5 rounded-2xl text-center">
+                  <div className="w-10 h-10 bg-[#a3cf4a]/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg className="w-5 h-5 text-[#a3cf4a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <p className="text-[#a3cf4a] font-bold text-sm mb-1">Help Request Sent</p>
+                  <p className="text-slate-300 text-[11px] leading-relaxed mb-4">
+                    {message}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="w-full bg-[#a3cf4a] text-slate-950 text-xs font-bold py-2 rounded-lg transition-all"
+                  >
+                    Close
+                  </button>
+                </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
@@ -100,8 +136,30 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen, onClo
                   </div>
 
                   {status === 'error' && (
-                    <div className="bg-red-500/10 border border-red-500/20 text-red-500 text-xs py-3 px-4 rounded-xl">
-                      {message}
+                    <div className="space-y-4">
+                      <div className="bg-red-500/10 border border-red-500/20 text-red-500 text-xs py-3 px-4 rounded-xl">
+                        {message}
+                      </div>
+                      
+                      {showHelpOption && (
+                        <div className="bg-[#a3cf4a]/10 border border-[#a3cf4a]/20 p-4 rounded-xl text-center">
+                          <p className="text-white text-xs font-medium mb-3">
+                            Need immediate assistance?
+                          </p>
+                          <button
+                            type="button"
+                            onClick={handleRequestHelp}
+                            disabled={isRequestingHelp}
+                            className="w-full bg-white/5 hover:bg-white/10 text-[#a3cf4a] text-xs font-bold py-2 rounded-lg transition-all flex items-center justify-center gap-2 border border-[#a3cf4a]/30"
+                          >
+                            {isRequestingHelp ? (
+                              <div className="w-3 h-3 border-2 border-[#a3cf4a]/30 border-t-[#a3cf4a] rounded-full animate-spin" />
+                            ) : (
+                              'Request Manual Reset'
+                            )}
+                          </button>
+                        </div>
+                      )}
                     </div>
                   )}
 
