@@ -15,9 +15,9 @@ const PhaseShift: React.FC = () => {
   ];
 
   return (
-    <section id="engineering" className="py-32 lg:py-48 bg-slate-50 relative overflow-hidden">
+    <section id="engineering" className="py-20 lg:py-48 bg-slate-50 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-24 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
           
           {/* Left Column: Engineering List */}
           <div className="max-w-2xl">
@@ -62,7 +62,7 @@ const PhaseShift: React.FC = () => {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.8 }}
-              className="mt-20 text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em] border-t border-slate-200 pt-12"
+              className="mt-12 lg:mt-20 text-slate-500 text-xs font-bold uppercase tracking-[0.3em] border-t border-slate-200 pt-8 lg:pt-12"
             >
               Mechanical Integration • Patent Reference US 11,852,306
             </motion.p>
@@ -75,7 +75,7 @@ const PhaseShift: React.FC = () => {
             viewport={{ once: true }}
             className="flex flex-col items-center"
           >
-            <span className="text-slate-400 text-[9px] font-bold uppercase tracking-[0.4em] mb-8">
+            <span className="text-slate-500 text-xs font-bold uppercase tracking-[0.4em] mb-4 lg:mb-8">
               Validated Interaction Flow
             </span>
             
@@ -101,7 +101,7 @@ const PhaseShift: React.FC = () => {
               ))}
             </div>
 
-            <p className="mt-8 text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em]">
+            <p className="mt-8 text-slate-500 text-xs font-bold uppercase tracking-[0.2em]">
               Removal → Use → Return → Continuity Maintained
             </p>
           </motion.div>
