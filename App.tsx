@@ -32,10 +32,11 @@ const App: React.FC = () => {
   // Check auth status on mount
   useEffect(() => {
     const checkAuth = async () => {
-      // Auto-detect invitation or recovery links from Supabase
+      // Detect invitation or recovery links from Supabase
       const hash = window.location.hash;
       if (hash.includes('type=recovery') || hash.includes('type=invite') || hash.includes('type=signup')) {
-        window.location.hash = '#reset-password';
+        setView('reset-password');
+        setIsAuthenticated(false); // Bypass login page
         return;
       }
 
@@ -55,9 +56,10 @@ const App: React.FC = () => {
   // Handle hash-based routing
   useEffect(() => {
     const handleHash = () => {
-      if (window.location.hash === '#admin') {
+      const hash = window.location.hash;
+      if (hash === '#admin') {
         setView('admin');
-      } else if (window.location.hash === '#reset-password') {
+      } else if (hash === '#reset-password' || hash.includes('type=recovery') || hash.includes('type=invite') || hash.includes('type=signup')) {
         setView('reset-password');
       } else {
         setView('landing');
