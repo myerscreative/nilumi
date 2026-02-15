@@ -42,13 +42,12 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen, onClo
     } catch (error: any) {
       console.error("Password reset error:", error);
       setStatus('error');
-      // Handle the specific rate limit error gracefully
-      if (error.message?.includes('rate limit')) {
-         setMessage("To protect your account, Supabase restricts how many reset links can be sent per hour. If you don't see an email yet, please check your spam folder or try again in an hour.");
-         setShowHelpOption(true);
-         setCooldown(60); // Also set cooldown on rate limit error
+      if (error.status === 429 || error.message?.includes('rate limit') || error.message?.includes('exceeded')) {
+        setMessage("To protect your account, Supabase restricts how many reset links can be sent per hour. If you don't see an email yet, please check your spam folder or try again in an hour.");
+        setShowHelpOption(true);
+        setCooldown(60);
       } else {
-         setMessage(error.message || 'Failed to send recovery email. Please try again.');
+        setMessage(error.message || 'An error occurred. Please try again.');
       }
     } finally {
       setIsLoading(false);

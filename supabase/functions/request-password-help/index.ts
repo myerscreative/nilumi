@@ -1,26 +1,28 @@
-
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { Resend } from "npm:resend"
 
 const resend = new Resend(Deno.env.get('RESEND_API_KEY'))
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, accept',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+};
 
-serve(async (req) => {
-  // Handle CORS
+Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    return new Response('ok', { status: 200, headers: corsHeaders });
+  }
+
+  if (req.method !== 'POST') {
+    return new Response('Method Not Allowed', { status: 405, headers: corsHeaders });
   }
 
   try {
-    const { email } = await req.json()
-    console.log(`Received manual help request for email: ${email}`)
+    const { email } = await req.json();
+    console.log(`Received manual help request for email: ${email}`);
 
     if (!email) {
-      throw new Error('Email is required')
+      throw new Error('Email is required');
     }
 
     const { data, error } = await resend.emails.send({
@@ -46,17 +48,17 @@ serve(async (req) => {
       throw error
     }
 
-    console.log(`Manual help request sent successfully for ${email}`)
+    console.log(`Manual help request sent successfully for ${email}`);
 
-    return new Response(JSON.stringify({ success: true, data }), { 
-      status: 200, 
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-    })
+    return new Response(
+      JSON.stringify({ success: true, message: 'Help request received. Robert has been notified.' }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
+    );
   } catch (error: any) {
-    console.error('Help request function error:', error.message)
-    return new Response(JSON.stringify({ error: error.message }), { 
-      status: 400, 
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-    })
+    console.error('Help request function error:', error.message);
+    return new Response(
+      JSON.stringify({ error: error.message || 'Failed to process request' }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+    );
   }
-})
+});

@@ -1,0 +1,2 @@
+[functions.request-password-help]
+verify_jwt = false
