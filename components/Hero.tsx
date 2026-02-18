@@ -15,7 +15,7 @@ const Hero: React.FC = () => {
   }, [isVideoModalOpen]);
 
   return (
-    <section className="relative min-h-[100dvh] w-full flex items-start pt-32 pb-12 md:items-end md:pb-32 md:pt-0 overflow-hidden bg-nilumi-navy">
+    <section className="relative min-h-[100dvh] w-full flex items-start pt-32 pb-12 md:items-end md:pb-32 overflow-hidden bg-nilumi-navy">
       {/* Background Video Layer */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none bg-nilumi-navy">
         <iframe
