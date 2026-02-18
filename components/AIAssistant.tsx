@@ -51,8 +51,24 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ isOpen, onToggle }) => {
     }
   };
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show when scrolled past 100px (e.g. out of header)
+      if (window.scrollY > 100) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <div className="fixed bottom-6 right-6 z-[60]">
+    <div className={`fixed bottom-6 right-6 z-[60] transition-opacity duration-500 ${isVisible || isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
       {isOpen ? (
         <div className="bg-slate-900 border border-slate-700 w-[90vw] sm:w-[400px] h-[500px] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
           <div className="p-4 border-b border-slate-800 flex justify-between items-center bg-gradient-to-r from-[#a3cf4a] to-[#2bb673] text-slate-900">

@@ -68,7 +68,7 @@ const Hero: React.FC = () => {
             {/* Primary High-Impact CTA: Video Overview */}
             <button 
               onClick={() => setIsVideoModalOpen(true)}
-              className="group relative flex items-center justify-center gap-3 px-8 py-[18px] bg-gradient-to-r from-nilumi-green to-nilumi-teal rounded-sm font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(163,198,68,0.4)] overflow-hidden"
+              className="group relative flex items-center justify-center gap-3 px-8 py-[18px] bg-gradient-to-r from-nilumi-green to-nilumi-teal rounded-sm font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(163,198,68,0.4)] overflow-hidden w-full sm:w-[320px]"
             >
               {/* The Play Icon */}
               <svg 
@@ -89,7 +89,7 @@ const Hero: React.FC = () => {
             {/* Secondary CTA: Licensing Brief */}
             <a 
               href="#contact"
-              className="w-full sm:w-auto px-10 py-5 bg-transparent border border-nilumi-green/40 text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-nilumi-green/5 transition-all flex items-center justify-center active:scale-95 backdrop-blur-sm"
+              className="w-full sm:w-[320px] px-10 py-5 bg-transparent border border-nilumi-green/40 text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-nilumi-green/5 transition-all flex items-center justify-center active:scale-95 backdrop-blur-sm"
             >
               Request Licensing Brief
             </a>
