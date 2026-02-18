@@ -1,264 +1,374 @@
+import React, { useEffect, useState } from 'react';
+import { UserProfile } from '../types';
+import { userService } from '../services/userService';
+import { getCurrentUser } from '../services/supabase';
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { getLeads, getAIChats } from '../services/supabase';
-import { Lead, AIChat } from '../types';
+// Simple Icons
+const SearchIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+);
+const PlusIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+);
+const EditIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+);
+const TrashIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+);
+const XIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+);
 
 const AdminDashboard: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'leads' | 'ai'>('leads');
-  const [leads, setLeads] = useState<Lead[]>([]);
-  const [aiChats, setAIChats] = useState<AIChat[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState('');
+    const [users, setUsers] = useState<UserProfile[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [modalOpen, setModalOpen] = useState(false);
+    const [editingUser, setEditingUser] = useState<UserProfile | null>(null);
+    const [formData, setFormData] = useState({
+        full_name: '',
+        email: '',
+        role: 'user',
+        is_admin: false
+    });
+    const [accessDenied, setAccessDenied] = useState(false);
+    const [notification, setNotification] = useState<{message: string, type: 'success' | 'error'} | null>(null);
 
-  const ADMIN_KEY = "nilumi2025";
+    // Initial Load & Auth Check
+    useEffect(() => {
+        const init = async () => {
+            setLoading(true);
+            const currentUser = await getCurrentUser();
+            
+            if (!currentUser) {
+                // If not authenticated, the App.tsx might redirect, but safe to handle here
+                window.location.hash = ''; 
+                return;
+            }
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      fetchData();
-    }
-  }, [isAuthenticated, activeTab]);
+            // Check if current user is admin via profile
+            const profile = await userService.getCurrentUserProfile();
+            
+            if (!profile || !profile.is_admin) {
+                setAccessDenied(true);
+                setLoading(false);
+                return;
+            }
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      if (activeTab === 'leads') {
-        const data = await getLeads();
-        setLeads(data || []);
-      } else {
-        const data = await getAIChats();
-        setAIChats(data || []);
-      }
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+            // Load users
+            loadUsers();
+        };
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password === ADMIN_KEY) {
-      setIsAuthenticated(true);
-      setError(null);
-    } else {
-      setError("Unauthorized access. Invalid key.");
-    }
-  };
+        init();
+    }, []);
 
-  const downloadCSV = () => {
-    if (activeTab === 'leads') {
-      if (leads.length === 0) return;
-      const headers = ["First Name", "Last Name", "Email", "Company", "Message", "Captured At"];
-      const rows = leads.map(l => [`"${l.first_name}"`, `"${l.last_name}"`, `"${l.email}"`, `"${l.company}"`, `"${l.licensing_interest?.replace(/"/g, '""')}"`, `"${new Date(l.captured_at).toLocaleString()}"`]);
-      triggerDownload("nilumi_leads", [headers.join(","), ...rows.map(r => r.join(","))].join("\n"));
-    } else {
-      if (aiChats.length === 0) return;
-      const headers = ["User Query", "AI Response", "Timestamp"];
-      const rows = aiChats.map(c => [`"${c.user_query?.replace(/"/g, '""')}"`, `"${c.ai_response?.replace(/"/g, '""')}"`, `"${new Date(c.created_at).toLocaleString()}"`]);
-      triggerDownload("nilumi_ai_analytics", [headers.join(","), ...rows.map(r => r.join(","))].join("\n"));
-    }
-  };
+    const loadUsers = async () => {
+        try {
+            const data = await userService.getUsers();
+            setUsers(data);
+        } catch (error) {
+            showNotification('Failed to load users', 'error');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  const triggerDownload = (name: string, content: string) => {
-    const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", `${name}_${new Date().toISOString().split('T')[0]}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+    const showNotification = (message: string, type: 'success' | 'error') => {
+        setNotification({ message, type });
+        setTimeout(() => setNotification(null), 3000);
+    };
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-[#0B0F19] flex items-center justify-center p-6">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 p-10 rounded-3xl w-full max-w-md shadow-2xl"
-        >
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 bg-nilumi-green/20 rounded-lg flex items-center justify-center">
-               <img src="/images/nilumi-logo.png" alt="Nilumi" className="w-6 h-6 object-contain" />
-            </div>
-            <h1 className="text-white font-heading font-bold text-xl tracking-tight">Command Center</h1>
-          </div>
-          
-          <form onSubmit={handleLogin} className="space-y-6">
-            <div>
-              <label className="block text-slate-400 text-xs uppercase tracking-widest font-bold mb-2">Access Portal Key</label>
-              <input 
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                autoFocus
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-nilumi-green transition-colors"
-                placeholder="••••••••"
-              />
-            </div>
-            {error && <p className="text-red-400 text-xs font-medium">{error}</p>}
-            <button 
-              type="submit"
-              className="w-full bg-gradient-to-r from-nilumi-green to-nilumi-teal text-[#0B0F19] font-bold py-3 rounded-xl hover:opacity-90 transition-opacity active:scale-[0.98] transform"
-            >
-              Initialize Session
-            </button>
-          </form>
-          <p className="mt-8 text-slate-600 text-[10px] text-center uppercase tracking-[0.2em]">Restricted to Nilumi Strategic Partners</p>
-        </motion.div>
-      </div>
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const filteredUsers = users.filter(user => 
+        user.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email?.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  }
 
-  return (
-    <div className="min-h-screen bg-[#0B0F19] text-white">
-      {/* Header */}
-      <nav className="border-b border-slate-800 bg-[#0B0F19]/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <img src="/images/nilumi-logo.png" alt="Nilumi" className="w-8 h-8" />
-            <h1 className="font-heading font-bold text-lg tracking-tighter">Strategic Command</h1>
-          </div>
-          
-          <div className="flex bg-slate-950 border border-slate-800 p-1 rounded-xl">
-            <button 
-              onClick={() => setActiveTab('leads')}
-              className={`px-6 py-2 rounded-lg text-xs font-bold transition-all ${activeTab === 'leads' ? 'bg-slate-800 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'}`}
-            >
-              Leads
-            </button>
-            <button 
-              onClick={() => setActiveTab('ai')}
-              className={`px-6 py-2 rounded-lg text-xs font-bold transition-all ${activeTab === 'ai' ? 'bg-slate-800 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'}`}
-            >
-              AI Insights
-            </button>
-          </div>
+    const handleOpenModal = (user: UserProfile | null = null) => {
+        if (user) {
+            setEditingUser(user);
+            setFormData({
+                full_name: user.full_name || '',
+                email: user.email || '',
+                role: user.role || 'user',
+                is_admin: user.is_admin || false
+            });
+        } else {
+            setEditingUser(null);
+            setFormData({
+                full_name: '',
+                email: '',
+                role: 'user',
+                is_admin: false
+            });
+        }
+        setModalOpen(true);
+    };
 
-          <div className="flex items-center gap-4">
-            <button 
-              onClick={downloadCSV}
-              className="bg-slate-800 hover:bg-slate-700 text-xs font-bold px-4 py-2 rounded-lg border border-slate-700 transition-colors flex items-center gap-2"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-              Export {activeTab === 'leads' ? 'Leads' : 'Analytics'}
-            </button>
-            <button 
-              onClick={() => window.location.hash = ''} 
-              className="text-slate-400 hover:text-white text-xs font-bold px-4 py-2 transition-colors"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </nav>
+    const handleCloseModal = () => {
+        setModalOpen(false);
+        setEditingUser(null);
+    };
 
-      <main className="max-w-7xl mx-auto px-8 py-12">
-        <div className="mb-12">
-          <h2 className="text-3xl font-heading font-bold mb-2">
-            {activeTab === 'leads' ? 'Lead Pipeline' : 'AI Assistant Analytics'}
-          </h2>
-          <p className="text-slate-500 text-sm">
-            {activeTab === 'leads' 
-              ? 'Real-time partnership inquiries from the global pitch portal.' 
-              : 'Tracking user intent and AI responses to optimize the conversion funnel.'}
-          </p>
-        </div>
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            if (editingUser) {
+                await userService.updateUser(editingUser.id, formData);
+                showNotification('User updated successfully', 'success');
+            } else {
+                await userService.addUser(formData);
+                showNotification('User created successfully (Profile only)', 'success');
+            }
+            handleCloseModal();
+            loadUsers();
+        } catch (error) {
+            showNotification('Operation failed', 'error');
+        }
+    };
 
-        <AnimatePresence mode="wait">
-          {loading ? (
-            <motion.div 
-              key="loading"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="flex flex-col items-center justify-center py-20"
-            >
-              <div className="w-12 h-12 border-2 border-nilumi-green border-t-transparent rounded-full animate-spin mb-4"></div>
-              <p className="text-slate-400 text-xs tracking-widest uppercase italic">Accessing Encrypted Stream...</p>
-            </motion.div>
-          ) : error ? (
-            <motion.div 
-              key="error"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              className="bg-red-900/20 border border-red-900/50 p-6 rounded-2xl text-red-400 text-sm"
-            >
-              SECURE SYNC FAILED: {error}
-            </motion.div>
-          ) : (
-            <motion.div 
-              key={activeTab}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="overflow-hidden rounded-3xl border border-slate-800 bg-slate-950/50 shadow-2xl"
-            >
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b border-slate-800 bg-slate-900/50">
-                    {activeTab === 'leads' ? (
-                      <>
-                        <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-slate-500">Contact</th>
-                        <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-slate-500">Company</th>
-                        <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-slate-500">Inquiry Profile</th>
-                        <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-slate-500 text-right">Captured</th>
-                      </>
-                    ) : (
-                      <>
-                        <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-slate-500">User Query</th>
-                        <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-slate-500">AI Response Path</th>
-                        <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-slate-500 text-right">Timestamp</th>
-                      </>
-                    )}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-800/50">
-                  {activeTab === 'leads' ? leads.map((lead) => (
-                    <tr key={lead.id} className="hover:bg-slate-900/30 transition-colors">
-                      <td className="px-6 py-6">
-                        <div className="font-bold text-white mb-0.5">{lead.first_name} {lead.last_name}</div>
-                        <div className="text-slate-500 text-xs font-medium">{lead.email}</div>
-                      </td>
-                      <td className="px-6 py-6">
-                        <span className="bg-slate-800 border border-slate-700 px-3 py-1 rounded-full text-[11px] font-bold text-nilumi-green uppercase tracking-tight">
-                          {lead.company || "N/A"}
-                        </span>
-                      </td>
-                      <td className="px-6 py-6">
-                        <p className="text-slate-400 text-xs leading-relaxed max-w-md italic">"{lead.licensing_interest}"</p>
-                      </td>
-                      <td className="px-6 py-6 text-right">
-                        <div className="text-slate-400 text-xs font-mono">{new Date(lead.captured_at).toLocaleDateString()}</div>
-                      </td>
-                    </tr>
-                  )) : aiChats.map((chat) => (
-                    <tr key={chat.id} className="hover:bg-slate-900/30 transition-colors">
-                      <td className="px-6 py-6 font-medium text-nilumi-green text-xs max-w-xs">{chat.user_query}</td>
-                      <td className="px-6 py-6">
-                        <p className="text-slate-500 text-xs leading-relaxed line-clamp-2 hover:line-clamp-none transition-all cursor-help max-w-lg">
-                          {chat.ai_response}
-                        </p>
-                      </td>
-                      <td className="px-6 py-6 text-right">
-                        <div className="text-slate-400 text-xs font-mono">{new Date(chat.created_at).toLocaleString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' })}</div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              {(activeTab === 'leads' ? leads : aiChats).length === 0 && (
-                <div className="p-20 text-center text-slate-600 text-xs uppercase tracking-widest font-bold">
-                  Pipeline Empty
+    const handleDelete = async (id: string) => {
+        if (!window.confirm('Are you sure you want to delete this user? This action cannot be undone.')) return;
+        
+        try {
+            await userService.deleteUser(id);
+            showNotification('User deleted successfully', 'success');
+            loadUsers();
+        } catch (error) {
+            showNotification('Failed to delete user', 'error');
+        }
+    };
+
+    if (accessDenied) {
+        return (
+            <div className="min-h-screen bg-nilumi-navy flex items-center justify-center text-white">
+                <div className="text-center p-8 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10">
+                    <h1 className="text-2xl font-bold text-red-500 mb-4">Access Denied</h1>
+                    <p className="mb-6">You do not have permission to view this page.</p>
+                    <button 
+                        onClick={() => window.location.hash = ''}
+                        className="px-6 py-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                    >
+                        Return to Home
+                    </button>
                 </div>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </main>
-    </div>
-  );
+            </div>
+        );
+    }
+
+    return (
+        <div className="min-h-screen bg-nilumi-navy text-white p-6 md:p-12 font-sans">
+            {/* Header */}
+            <div className="max-w-7xl mx-auto mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h1 className="text-3xl font-heading font-bold text-transparent bg-clip-text bg-gradient-to-r from-nilumi-green to-nilumi-teal">
+                        User Management
+                    </h1>
+                    <p className="text-gray-400 mt-1">Manage platform access and profiles</p>
+                </div>
+                <div className="flex items-center gap-4 w-full md:w-auto">
+                    <button 
+                        onClick={() => window.location.hash = ''} 
+                        className="text-gray-400 hover:text-white transition-colors"
+                    >
+                        Exit Dashboard
+                    </button>
+                    <button 
+                        onClick={() => handleOpenModal()}
+                        className="flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-nilumi-green to-nilumi-teal hover:opacity-90 transition-opacity font-semibold shadow-lg shadow-nilumi-green/20"
+                    >
+                        <PlusIcon /> Add User
+                    </button>
+                </div>
+            </div>
+
+            {/* Main Content */}
+            <div className="max-w-7xl mx-auto">
+                <div className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
+                    {/* Toolbar */}
+                    <div className="p-6 border-b border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div className="relative w-full md:w-96">
+                            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                <SearchIcon />
+                            </div>
+                            <input 
+                                type="text" 
+                                placeholder="Search users by name or email..." 
+                                value={searchQuery}
+                                onChange={handleSearch}
+                                className="w-full bg-black/20 border border-white/10 rounded-xl py-2 pl-10 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-nilumi-green/50 transition-colors"
+                            />
+                        </div>
+                        <div className="text-sm text-gray-400">
+                            Showing {filteredUsers.length} users
+                        </div>
+                    </div>
+
+                    {/* Table */}
+                    <div className="overflow-x-auto">
+                        {loading ? (
+                             <div className="p-12 text-center text-gray-400">Loading users...</div>
+                        ) : (
+                        <table className="w-full text-left">
+                            <thead>
+                                <tr className="bg-white/5 border-b border-white/10">
+                                    <th className="p-4 font-semibold text-gray-300">Name</th>
+                                    <th className="p-4 font-semibold text-gray-300">Email</th>
+                                    <th className="p-4 font-semibold text-gray-300">Role</th>
+                                    <th className="p-4 font-semibold text-gray-300">Status</th>
+                                    <th className="p-4 font-semibold text-gray-300 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-white/5">
+                                {filteredUsers.length > 0 ? filteredUsers.map(user => (
+                                    <tr key={user.id} className="hover:bg-white/5 transition-colors">
+                                        <td className="p-4 font-medium">{user.full_name || 'N/A'}</td>
+                                        <td className="p-4 text-gray-400">{user.email}</td>
+                                        <td className="p-4">
+                                            <span className={`px-2 py-1 rounded text-xs font-semibold ${user.role === 'admin' ? 'bg-purple-500/20 text-purple-300' : 'bg-blue-500/20 text-blue-300'}`}>
+                                                {user.role}
+                                            </span>
+                                        </td>
+                                        <td className="p-4">
+                                            {user.is_admin ? (
+                                                <span className="text-nilumi-green text-sm flex items-center gap-1">
+                                                    ● Admin
+                                                </span>
+                                            ) : (
+                                                <span className="text-gray-500 text-sm">Member</span>
+                                            )}
+                                        </td>
+                                        <td className="p-4 text-right">
+                                            <div className="flex items-center justify-end gap-2">
+                                                <button 
+                                                    onClick={() => handleOpenModal(user)}
+                                                    className="p-2 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                                    title="Edit"
+                                                >
+                                                    <EditIcon />
+                                                </button>
+                                                <button 
+                                                    onClick={() => handleDelete(user.id)}
+                                                    className="p-2 hover:bg-red-500/20 rounded-lg text-gray-400 hover:text-red-400 transition-colors"
+                                                    title="Delete"
+                                                >
+                                                    <TrashIcon />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                )) : (
+                                    <tr>
+                                        <td colSpan={5} className="p-12 text-center text-gray-500">
+                                            No users found matching your search.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            {/* Modal */}
+            {modalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+                    <div className="bg-[#0B0F19] rounded-2xl border border-white/10 shadow-2xl w-full max-w-md p-6 relative">
+                        <button 
+                            onClick={handleCloseModal}
+                            className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+                        >
+                            <XIcon />
+                        </button>
+                        
+                        <h2 className="text-2xl font-bold mb-6 font-heading">
+                            {editingUser ? 'Edit User' : 'Add New User'}
+                        </h2>
+
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-400 mb-1">Full Name</label>
+                                <input 
+                                    type="text" 
+                                    required 
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 focus:outline-none focus:border-nilumi-green transition-colors"
+                                    value={formData.full_name}
+                                    onChange={e => setFormData({...formData, full_name: e.target.value})}
+                                />
+                            </div>
+                            
+                            <div>
+                                <label className="block text-sm font-medium text-gray-400 mb-1">Email Address</label>
+                                <input 
+                                    type="email" 
+                                    required 
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 focus:outline-none focus:border-nilumi-green transition-colors"
+                                    value={formData.email}
+                                    onChange={e => setFormData({...formData, email: e.target.value})}
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-400 mb-1">Role</label>
+                                    <select 
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 focus:outline-none focus:border-nilumi-green transition-colors"
+                                        value={formData.role}
+                                        onChange={e => setFormData({...formData, role: e.target.value})}
+                                    >
+                                        <option value="user">User</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="editor">Editor</option>
+                                    </select>
+                                </div>
+                                <div className="flex items-center pt-6">
+                                    <label className="flex items-center gap-2 cursor-pointer">
+                                        <input 
+                                            type="checkbox" 
+                                            className="w-4 h-4 rounded border-gray-600 text-nilumi-green focus:ring-nilumi-green"
+                                            checked={formData.is_admin}
+                                            onChange={e => setFormData({...formData, is_admin: e.target.checked})}
+                                        />
+                                        <span className="text-sm font-medium text-gray-300">Is Admin</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div className="pt-4 flex justify-end gap-3">
+                                <button 
+                                    type="button"
+                                    onClick={handleCloseModal}
+                                    className="px-4 py-2 rounded-lg text-gray-400 hover:bg-white/5 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button 
+                                    type="submit"
+                                    className="px-6 py-2 rounded-lg bg-gradient-to-r from-nilumi-green to-nilumi-teal text-white font-semibold hover:opacity-90 transition-opacity"
+                                >
+                                    {editingUser ? 'Save Changes' : 'Create User'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Notification Toast */}
+            {notification && (
+                <div className={`fixed bottom-8 right-8 px-6 py-3 rounded-xl shadow-2xl backdrop-blur-md border ${
+                    notification.type === 'success' ? 'bg-green-500/20 border-green-500/50 text-green-200' : 'bg-red-500/20 border-red-500/50 text-red-200'
+                } transition-all duration-300 transform translate-y-0`}>
+                    {notification.message}
+                </div>
+            )}
+        </div>
+    );
 };
 
 export default AdminDashboard;
