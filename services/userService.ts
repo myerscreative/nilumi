@@ -87,5 +87,32 @@ export const userService = {
     }
 
     return data;
+  },
+
+  // Send password reset email
+  sendPasswordReset: async (email: string): Promise<void> => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/#reset-password',
+    });
+
+    if (error) {
+      console.error('Error sending password reset:', error);
+      throw error;
+    }
+  },
+
+  // Send magic link (OTP)
+  sendMagicLink: async (email: string): Promise<void> => {
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: window.location.origin,
+      }
+    });
+
+    if (error) {
+      console.error('Error sending magic link:', error);
+      throw error;
+    }
   }
 };

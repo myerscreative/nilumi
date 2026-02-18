@@ -19,6 +19,12 @@ const TrashIcon = () => (
 const XIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 );
+const KeyIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+);
+const MagicWandIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 4V2"></path><path d="M15 16v-2"></path><path d="M8 9h2"></path><path d="M20 9h2"></path><path d="M17.8 11.8L19 13"></path><path d="M15 9h0"></path><path d="M17.8 6.2L19 5"></path><path d="M3 21l9-9"></path><path d="M12.2 6.2L11 5"></path></svg>
+);
 
 const AdminDashboard: React.FC = () => {
     const [users, setUsers] = useState<UserProfile[]>([]);
@@ -143,6 +149,26 @@ const AdminDashboard: React.FC = () => {
         }
     };
 
+    const handleSendPasswordReset = async (email: string) => {
+        if (!window.confirm(`Send password reset email to ${email}?`)) return;
+        try {
+            await userService.sendPasswordReset(email);
+            showNotification(`Reset email sent to ${email}`, 'success');
+        } catch (error) {
+            showNotification('Failed to send reset email', 'error');
+        }
+    };
+
+    const handleSendMagicLink = async (email: string) => {
+        if (!window.confirm(`Send magic login link to ${email}?`)) return;
+        try {
+            await userService.sendMagicLink(email);
+            showNotification(`Magic link sent to ${email}`, 'success');
+        } catch (error) {
+            showNotification('Failed to send magic link', 'error');
+        }
+    };
+
     if (accessDenied) {
         return (
             <div className="min-h-screen bg-nilumi-navy flex items-center justify-center text-white">
@@ -257,6 +283,21 @@ const AdminDashboard: React.FC = () => {
                                                     title="Delete"
                                                 >
                                                     <TrashIcon />
+                                                </button>
+                                                <div className="w-px h-6 bg-white/10 mx-1"></div>
+                                                <button 
+                                                    onClick={() => handleSendPasswordReset(user.email)}
+                                                    className="p-2 hover:bg-yellow-500/20 rounded-lg text-gray-400 hover:text-yellow-400 transition-colors"
+                                                    title="Send Password Reset"
+                                                >
+                                                    <KeyIcon />
+                                                </button>
+                                                <button 
+                                                    onClick={() => handleSendMagicLink(user.email)}
+                                                    className="p-2 hover:bg-purple-500/20 rounded-lg text-gray-400 hover:text-purple-400 transition-colors"
+                                                    title="Send Magic Link"
+                                                >
+                                                    <MagicWandIcon />
                                                 </button>
                                             </div>
                                         </td>

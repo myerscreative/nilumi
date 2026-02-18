@@ -22,6 +22,7 @@ export default {
       animation: {
         'sparkle': 'sparkle 2s ease-in-out infinite',
         'float': 'float 3s ease-in-out infinite',
+        'shimmer': 'shimmer 1.5s infinite',
       },
       keyframes: {
         sparkle: {
@@ -31,6 +32,9 @@ export default {
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' },
+        },
+        shimmer: {
+          '100%': { transform: 'translateX(100%)' },
         }
       }
     },

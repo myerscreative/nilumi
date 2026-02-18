@@ -12,6 +12,9 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ scrolled, theme = 'dark', isAuthenticated, onLogout, onOpenAI }) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const isLight = theme === 'light';
+  // Only show light mode styles (dark text) when scrambled AND in light theme.
+  // When at top (not scrolled), we are always transparent over dark hero -> need white text.
+  const showLightModeStyles = isLight && scrolled;
 
   const handleLogout = async () => {
     try {
@@ -41,14 +44,14 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, theme = 'dark', isAuthenticat
               />
             </div>
             <div className="flex flex-col">
-              <span className={`text-base md:text-lg font-bold tracking-[0.3em] font-heading uppercase transition-all leading-none ${isLight ? 'text-nilumi-navy' : 'text-white'}`}>NILUMI</span>
+              <span className={`text-base md:text-lg font-bold tracking-[0.3em] font-heading uppercase transition-all leading-none ${showLightModeStyles ? 'text-nilumi-navy' : 'text-white'}`}>NILUMI</span>
               {isAuthenticated && (
                 <span className="hidden md:block text-[7px] font-bold tracking-[0.2em] text-[#a3cf4a] uppercase mt-1">Secure Portal</span>
               )}
             </div>
           </div>
           
-          <div className={`hidden md:flex items-center gap-10 text-[9px] uppercase transition-colors font-medium-header tracking-premium ${isLight ? 'text-slate-500' : 'text-white/60'}`}>
+          <div className={`hidden md:flex items-center gap-10 text-[9px] uppercase transition-colors font-medium-header tracking-premium ${showLightModeStyles ? 'text-slate-500' : 'text-white/60'}`}>
             <a href="#problem" className={`hover:text-nilumi-teal transition-colors`}>The Gap</a>
             <a href="#solution" className={`hover:text-nilumi-teal transition-colors`}>Innovation</a>
             <a href="#features" className={`hover:text-nilumi-teal transition-colors`}>Tech</a>
@@ -70,7 +73,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, theme = 'dark', isAuthenticat
               <button
                 onClick={handleLogout}
                 className={`hidden md:block text-[9px] font-bold uppercase tracking-[0.2em] transition-colors px-4 py-2 rounded-sm border ${
-                  isLight 
+                  showLightModeStyles 
                     ? 'text-slate-500 border-slate-200 hover:bg-slate-50' 
                     : 'text-white/60 border-white/10 hover:bg-white/5'
                 }`}
@@ -80,7 +83,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, theme = 'dark', isAuthenticat
             )}
             <a 
               href="#contact"
-              className={`${isLight ? 'bg-nilumi-navy text-white hover:bg-slate-800' : 'bg-white text-slate-950 hover:bg-slate-100'} px-5 md:px-7 py-2 md:py-2.5 rounded-sm text-[8px] md:text-[9px] font-bold uppercase tracking-[0.2em] transition-all active:scale-95 shadow-xl`}
+              className={`${showLightModeStyles ? 'bg-nilumi-navy text-white hover:bg-slate-800' : 'bg-white text-slate-950 hover:bg-slate-100'} px-5 md:px-7 py-2 md:py-2.5 rounded-sm text-[8px] md:text-[9px] font-bold uppercase tracking-[0.2em] transition-all active:scale-95 shadow-xl`}
             >
               Request Demo
             </a>
@@ -88,12 +91,12 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, theme = 'dark', isAuthenticat
             {/* Hamburger Menu Toggle */}
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={`md:hidden p-2 transition-colors ${isLight ? 'text-nilumi-navy' : 'text-white'}`}
+              className={`md:hidden p-2 transition-colors ${showLightModeStyles ? 'text-nilumi-navy' : 'text-white'}`}
             >
               <div className="w-5 h-4 flex flex-col justify-between items-end">
-                <span className={`h-[1.5px] transition-all duration-300 ${isMenuOpen ? 'w-5 translate-y-[7.5px] rotate-45' : 'w-5'} ${isLight ? 'bg-nilumi-navy' : 'bg-white'}`}></span>
-                <span className={`h-[1.5px] transition-all duration-300 ${isMenuOpen ? 'opacity-0' : 'w-3'} ${isLight ? 'bg-nilumi-navy' : 'bg-white'}`}></span>
-                <span className={`h-[1.5px] transition-all duration-300 ${isMenuOpen ? 'w-5 -translate-y-[7.5px] -rotate-45' : 'w-4'} ${isLight ? 'bg-nilumi-navy' : 'bg-white'}`}></span>
+                <span className={`h-[1.5px] transition-all duration-300 ${isMenuOpen ? 'w-5 translate-y-[7.5px] rotate-45' : 'w-5'} ${showLightModeStyles ? 'bg-nilumi-navy' : 'bg-white'}`}></span>
+                <span className={`h-[1.5px] transition-all duration-300 ${isMenuOpen ? 'opacity-0' : 'w-3'} ${showLightModeStyles ? 'bg-nilumi-navy' : 'bg-white'}`}></span>
+                <span className={`h-[1.5px] transition-all duration-300 ${isMenuOpen ? 'w-5 -translate-y-[7.5px] -rotate-45' : 'w-4'} ${showLightModeStyles ? 'bg-nilumi-navy' : 'bg-white'}`}></span>
               </div>
             </button>
           </div>

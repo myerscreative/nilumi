@@ -68,15 +68,22 @@ const Hero: React.FC = () => {
             {/* Primary High-Impact CTA: Video Overview */}
             <button 
               onClick={() => setIsVideoModalOpen(true)}
-              className="w-full sm:w-auto px-10 py-5 bg-white text-nilumi-navy text-[10px] font-black uppercase tracking-[0.3em] hover:bg-slate-100 transition-all flex items-center justify-center gap-3 active:scale-95 group relative overflow-hidden animate-pulse-glow shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+              className="group relative flex items-center justify-center gap-3 px-8 py-[18px] bg-gradient-to-r from-nilumi-green to-nilumi-teal rounded-sm font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(163,198,68,0.4)] overflow-hidden"
             >
-              <span className="relative z-10 flex items-center gap-3">
-                <svg className="w-5 h-5 text-nilumi-navy group-hover:scale-125 transition-transform" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
+              {/* The Play Icon */}
+              <svg 
+                className="w-4 h-4 fill-current transition-transform group-hover:translate-x-1" 
+                viewBox="0 0 24 24"
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
+              
+              <span className="uppercase tracking-widest text-sm">
                 Watch 90-Second Overview
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+
+              {/* Subtle Shimmer Effect */}
+              <div className="absolute inset-0 bg-white/20 -translate-x-full skew-x-12 group-hover:animate-shimmer" />
             </button>
 
             {/* Secondary CTA: Licensing Brief */}
@@ -163,8 +170,8 @@ const Hero: React.FC = () => {
           animation: pulseGlow 3s infinite ease-in-out;
         }
         @keyframes pulseGlow {
-          0%, 100% { box-shadow: 0 0 20px rgba(255,255,255,0.1); }
-          50% { box-shadow: 0 0 40px rgba(255,255,255,0.25); }
+          0%, 100% { box-shadow: 0 0 20px rgba(163,198,68,0.4); }
+          50% { box-shadow: 0 0 40px rgba(163,198,68,0.7); }
         }
       `}</style>
     </section>
