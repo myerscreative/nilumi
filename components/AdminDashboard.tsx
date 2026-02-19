@@ -251,7 +251,7 @@ const AdminDashboard: React.FC = () => {
                             </thead>
                             <tbody className="divide-y divide-white/5">
                                 {filteredUsers.length > 0 ? filteredUsers.map(user => (
-                                    <tr key={user.id} className="hover:bg-white/5 transition-colors">
+                                    <tr key={user.id} className="group md:hover:bg-white/5 transition-colors relative">
                                         <td className="p-4 font-medium">{user.full_name || 'N/A'}</td>
                                         <td className="p-4 text-gray-400">{user.email}</td>
                                         <td className="p-4">
@@ -269,17 +269,17 @@ const AdminDashboard: React.FC = () => {
                                             )}
                                         </td>
                                         <td className="p-4 text-right">
-                                            <div className="flex items-center justify-end gap-2">
+                                            <div className="flex items-center justify-end gap-2 relative z-10">
                                                 <button 
                                                     onClick={() => handleOpenModal(user)}
-                                                    className="p-2 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                                    className="p-3 hover:bg-white/10 active:bg-white/20 rounded-lg text-gray-400 hover:text-white transition-colors touch-target-fix"
                                                     title="Edit"
                                                 >
                                                     <EditIcon />
                                                 </button>
                                                 <button 
                                                     onClick={() => handleDelete(user.id)}
-                                                    className="p-2 hover:bg-red-500/20 rounded-lg text-gray-400 hover:text-red-400 transition-colors"
+                                                    className="p-3 hover:bg-red-500/20 active:bg-red-500/30 rounded-lg text-gray-400 hover:text-red-400 transition-colors touch-target-fix"
                                                     title="Delete"
                                                 >
                                                     <TrashIcon />
@@ -287,14 +287,14 @@ const AdminDashboard: React.FC = () => {
                                                 <div className="w-px h-6 bg-white/10 mx-1"></div>
                                                 <button 
                                                     onClick={() => handleSendPasswordReset(user.email)}
-                                                    className="p-2 hover:bg-yellow-500/20 rounded-lg text-gray-400 hover:text-yellow-400 transition-colors"
+                                                    className="p-3 hover:bg-yellow-500/20 active:bg-yellow-500/30 rounded-lg text-gray-400 hover:text-yellow-400 transition-colors touch-target-fix"
                                                     title="Send Password Reset"
                                                 >
                                                     <KeyIcon />
                                                 </button>
                                                 <button 
                                                     onClick={() => handleSendMagicLink(user.email)}
-                                                    className="p-2 hover:bg-purple-500/20 rounded-lg text-gray-400 hover:text-purple-400 transition-colors"
+                                                    className="p-3 hover:bg-purple-500/20 active:bg-purple-500/30 rounded-lg text-gray-400 hover:text-purple-400 transition-colors touch-target-fix"
                                                     title="Send Magic Link"
                                                 >
                                                     <MagicWandIcon />
