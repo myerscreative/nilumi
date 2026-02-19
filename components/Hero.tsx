@@ -64,11 +64,11 @@ const Hero: React.FC = () => {
             Nilumi is a patented, code-compliant wall switch with a removable, auto-charging flashlight — engineered for licensing integration.
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center gap-6 md:gap-8">
+          <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
             {/* Primary High-Impact CTA: Video Overview */}
             <button 
               onClick={() => setIsVideoModalOpen(true)}
-              className="group relative flex items-center justify-center gap-3 px-8 py-[18px] bg-gradient-to-r from-nilumi-green to-nilumi-teal rounded-sm font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(163,198,68,0.4)] overflow-hidden w-full sm:w-[320px]"
+              className="group relative flex items-center justify-center gap-3 px-8 py-[18px] bg-gradient-to-r from-nilumi-green to-nilumi-teal rounded-sm font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(163,198,68,0.4)] overflow-hidden w-full md:flex-1 min-w-0"
             >
               {/* The Play Icon */}
               <svg 
@@ -78,7 +78,7 @@ const Hero: React.FC = () => {
                 <path d="M8 5v14l11-7z" />
               </svg>
               
-              <span className="uppercase tracking-widest text-sm">
+              <span className="uppercase tracking-widest text-sm whitespace-nowrap">
                 Watch 90-Second Overview
               </span>
 
@@ -89,7 +89,7 @@ const Hero: React.FC = () => {
             {/* Secondary CTA: Licensing Brief */}
             <a 
               href="#contact"
-              className="w-full sm:w-[320px] px-10 py-5 bg-transparent border border-nilumi-green/40 text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-nilumi-green/5 transition-all flex items-center justify-center active:scale-95 backdrop-blur-sm"
+              className="w-full md:flex-1 min-w-0 px-10 py-5 bg-transparent border border-nilumi-green/40 text-white text-[10px] font-black uppercase tracking-[0.3em] hover:bg-nilumi-green/5 transition-all flex items-center justify-center active:scale-95 backdrop-blur-sm"
             >
               Request Licensing Brief
             </a>

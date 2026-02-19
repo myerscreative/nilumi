@@ -25,7 +25,7 @@ const SuccessSection: React.FC = () => {
           <img 
             src={successImage}
             alt="Nilumi Success Scene" 
-            className="w-full h-full object-cover scale-x-[-1]"
+            className="w-full h-full object-cover object-right scale-x-[-1]"
           />
         </motion.div>
         {/* Subtle Gradient Overlays for Readability and Depth */}
